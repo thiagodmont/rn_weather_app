@@ -33,6 +33,7 @@ module.exports = {
     '@typescript-eslint/strict-boolean-expressions': 'off',
     '@typescript-eslint/no-floating-promises': 'off',
     '@typescript-eslint/no-unused-vars': 'off',
+    '@typescript-eslint/consistent-type-definitions': 'off',
     'react/jsx-curly-spacing': 'off',
     'eol-last': ['error', 'always'],
     'no-multiple-empty-lines': 'error',
