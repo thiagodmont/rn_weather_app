@@ -6,6 +6,7 @@ import Cloudy from 'app/assets/cloudy.svg'
 import Rain from 'app/assets/rain.svg'
 import Thunderstorm from 'app/assets/thunderstorm.svg'
 import Snow from 'app/assets/snow.svg'
+import Onboarding from 'app/assets/onboarding.svg'
 
 interface Spaces {
   XXSmall: 2;
@@ -71,5 +72,6 @@ export const Vector = {
   Cloudy,
   Rain,
   Thunderstorm,
-  Snow
+  Snow,
+  Onboarding
 }

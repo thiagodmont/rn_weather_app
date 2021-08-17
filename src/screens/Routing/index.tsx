@@ -3,10 +3,8 @@ import { connect } from 'react-redux'
 import { AppState } from 'app/store'
 import { t } from 'app/locale'
 
-import { NavigationContainer, DefaultTheme } from '@react-navigation/native'
-import { createStackNavigator } from '@react-navigation/stack'
-import { RouteProp } from '@react-navigation/native'
-import { StackNavigationProp } from '@react-navigation/stack'
+import { NavigationContainer, DefaultTheme, RouteProp } from '@react-navigation/native'
+import { createStackNavigator, StackNavigationProp } from '@react-navigation/stack'
 
 import Loading from 'app/components/atom/Loading'
 

@@ -31,7 +31,7 @@ class Weather {
         return <Vector.Night width={size} height={size} />
       case '02d': 
         return <Vector.CloudyDay width={size} height={size} />
-      case '02d': 
+      case '02n': 
         return <Vector.CloudyNight width={size} height={size} />
       case '03d': 
       case '03n':
