@@ -7,6 +7,8 @@ import {
   ViewStyle
 } from "react-native"
 
+import { Colors, Spaces, FontSize } from "app/design"
+
 type Props = {
   text: string;
   style?: ViewStyle;
@@ -26,19 +28,19 @@ export default Button
 
 const styles = StyleSheet.create({
   button: {
-    backgroundColor: "#9374b7",
+    backgroundColor: Colors.Primary,
     alignItems: "center",
     justifyContent: "center",
-    paddingVertical: 16,
+    paddingVertical: Spaces.Medium,
     borderRadius: 10,
-    marginTop: 10,
+    marginTop: Spaces.Medium,
   },
   disabled: {
     opacity: 0.6
   },
   buttonText: {
     color: "#fff",
-    fontSize: 16,
+    fontSize: FontSize.SmallBody,
     fontWeight: "bold",
   },
 });

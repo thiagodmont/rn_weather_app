@@ -1,6 +1,6 @@
 import { StyleSheet, TextStyle, ViewStyle } from "react-native"
 import { useTheme } from '@react-navigation/native'
-import { useFontSize, useSpaces } from "app/design";
+import { FontSize, Spaces, Colors } from "app/design";
 
 export interface Styles {
   container: ViewStyle;
@@ -13,27 +13,23 @@ interface IComponentStyle {
 }
 
 const ComponentStyle: React.FC<IComponentStyle> = ({ children }) => {
-  const { colors } = useTheme()
-  const spaces = useSpaces()
-  const fontSize = useFontSize()
-  
   return children(
     StyleSheet.create<Styles>({
       container: {
         flex: 1,
-        backgroundColor: colors.background,
-        paddingHorizontal: spaces.Large,
-        paddingTop: spaces.Large,
+        backgroundColor: Colors.White,
+        paddingHorizontal: Spaces.Large,
+        paddingTop: Spaces.Large,
       },
       headerText: {
         color: "#353031",
         fontWeight: "bold",
         textAlign: 'center',
-        fontSize: fontSize.Level3,
-        marginBottom: spaces.Large,
+        fontSize: FontSize.Level3,
+        marginBottom: Spaces.Large,
       },
       button: {
-        marginBottom: spaces.Large,
+        marginBottom: Spaces.Large,
       },
     }),
   );

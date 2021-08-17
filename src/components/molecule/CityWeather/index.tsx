@@ -14,15 +14,9 @@ type Props = {
 }
 
 const CityWeather: React.FC<Props> = ({ city, onPress, findWeatherCityById }) => {
-
   useEffect(() => {
-    findCityWeather()
-  }, [])
-
-  const findCityWeather = async () => {
-    const result = await findWeatherCityById(city.id)
-    console.log(result)
-  }
+    findWeatherCityById(city.id)
+  }, [findWeatherCityById, city])
 
   return (
     <ComponentStyle> 

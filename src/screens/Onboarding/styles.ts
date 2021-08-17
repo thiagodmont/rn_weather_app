@@ -1,5 +1,5 @@
 import { StyleSheet, TextStyle, ViewStyle } from "react-native"
-import { useFontSize, useSpaces } from "app/design"
+import { FontSize, Spaces } from "app/design"
 
 export interface Styles {
   container: ViewStyle;
@@ -12,24 +12,21 @@ interface IComponentStyle {
 }
 
 const ComponentStyle: React.FC<IComponentStyle> = ({ children }) => {
-  const spaces = useSpaces()
-  const font = useFontSize()
-  
   return children(
     StyleSheet.create<Styles>({
       container: {
         flex: 1,
-        paddingHorizontal: spaces.Large,
-        paddingTop: spaces.Large,
+        paddingHorizontal: Spaces.Large,
+        paddingTop: Spaces.Large,
         alignItems: "center"
       },
       title: {
-        fontSize: font.Level4,
-        marginBottom: spaces.Large
+        fontSize: FontSize.Level4,
+        marginBottom: Spaces.Large
       },
       button: {
         width: "100%",
-        marginTop: spaces.Large,
+        marginTop: Spaces.Large,
       }
     }),
   )

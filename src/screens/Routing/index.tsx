@@ -1,6 +1,4 @@
 import React, { useEffect } from 'react'
-import { connect } from 'react-redux'
-import { AppState } from 'app/store'
 import { t } from 'app/locale'
 
 import { NavigationContainer, DefaultTheme, RouteProp } from '@react-navigation/native'
@@ -14,10 +12,9 @@ import FindCityScreen from 'app/screens/FindCity'
 import DetailScreen from 'app/screens/Detail'
 
 import { StateMachineType } from 'app/utils/statemachine'
-import * as AccountAction from 'app/store/account/Action'
-import { AccountDataState } from 'app/store/account/Reducer'
 import { City } from 'app/utils/weather'
-import { useColors } from 'app/design'
+import { Colors } from 'app/design'
+import { useAccountStore } from 'app/store/account/Hooks'
 
 type RootStackParamList = {
   Onboarding: undefined;
@@ -44,20 +41,17 @@ const MyTheme = {
   ...DefaultTheme,
   colors: {
     ...DefaultTheme.colors,
-    primary: useColors().primary,
-    background: useColors().background,
+    primary: Colors.Primary,
+    background: Colors.White,
   }
 }
 
-type RoutingProps = {
-  data: AccountDataState;
-  accountInfo: () => void;
-}
+function Routing() {
+  const { data, viewState, accountInfo } = useAccountStore()
 
-function Routing({ data, accountInfo }: RoutingProps) {
   useEffect(() => {
     accountInfo()
-  }, [])
+  }, [accountInfo])
 
   const renderStateNotStarted = () => <Loading />
 
@@ -65,7 +59,7 @@ function Routing({ data, accountInfo }: RoutingProps) {
   
   const renderStateLoaded = () => (
     <NavigationContainer theme={MyTheme}>
-      <RootStack.Navigator initialRouteName={data.value?.onboarding? "Onboarding" : "Home"}>
+      <RootStack.Navigator initialRouteName={data?.onboarding? "Onboarding" : "Home"}>
         <RootStack.Screen 
           name="Home" 
           component={HomeScreen}
@@ -80,7 +74,7 @@ function Routing({ data, accountInfo }: RoutingProps) {
   )
 
   const rendering = () => {
-    switch(data?.state) {
+    switch(viewState) {
       case StateMachineType.NotStarted:
         return renderStateNotStarted()
       case StateMachineType.Loading:
@@ -95,14 +89,4 @@ function Routing({ data, accountInfo }: RoutingProps) {
   )
 }
 
-const mapStateToProps = ({ account }: AppState) => {
-  return {
-    data: account?.data,
-  }
-}
-
-const mapDispatchToProps = {
-  accountInfo: AccountAction.accountInfo,
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(Routing);
+export default Routing

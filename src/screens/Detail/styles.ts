@@ -1,5 +1,5 @@
 import { StyleSheet, TextStyle, ViewStyle } from 'react-native'
-import { useFontSize, useSpaces, useColors } from 'app/design'
+import { FontSize, Spaces, Colors } from 'app/design'
 
 export interface Styles {
   box: ViewStyle;
@@ -17,10 +17,6 @@ interface IComponentStyle {
 
 const ComponentStyle: React.FC<IComponentStyle> = ({ children }) => {
   
-  const spaces   = useSpaces()
-  const fontSize = useFontSize()
-  const colors   = useColors()
-  
   return children(
     StyleSheet.create<Styles>({
       box: {
@@ -29,21 +25,21 @@ const ComponentStyle: React.FC<IComponentStyle> = ({ children }) => {
       container: {
         flex: 1,
         alignItems: 'center',
-        backgroundColor: colors.background,
-        paddingHorizontal: spaces.Large,
-        paddingTop: spaces.Large,
+        backgroundColor: Colors.White,
+        paddingHorizontal: Spaces.Large,
+        paddingTop: Spaces.Large,
       },
       tempeture: {
-        fontSize: fontSize.Level2,
-        marginTop: spaces.Medium
+        fontSize: FontSize.Level2,
+        marginTop: Spaces.Medium
       },
       city: {
-        fontSize: fontSize.Level4,
-        marginTop: spaces.Small
+        fontSize: FontSize.Level4,
+        marginTop: Spaces.Small
       },
       button: {
-        marginHorizontal: spaces.Medium,
-        backgroundColor: colors.danger
+        marginHorizontal: Spaces.Medium,
+        backgroundColor: Colors.Red
       },
       infoBox: {
         flexDirection: 'row',
@@ -56,8 +52,8 @@ const ComponentStyle: React.FC<IComponentStyle> = ({ children }) => {
           height: 1,
           width: 1
         },
-        paddingVertical: spaces.Medium,
-        marginTop: spaces.Medium,
+        paddingVertical: Spaces.Medium,
+        marginTop: Spaces.Medium,
       },
       infoBoxData: {
         flex: 1,

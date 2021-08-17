@@ -1,17 +1,30 @@
 import * as React from 'react'
-import { connect } from 'react-redux'
 import { View, Text } from 'react-native'
 import { Vector } from 'app/design'
 import Button from 'app/components/atom/Button'
-import * as AccountAction from 'app/store/account/Action'
-
+import { useAccountStore } from 'app/store/account/Hooks'
 import ComponentStyle from 'app/screens/Onboarding/styles'
+import { OnboardingScreenNavigationProp } from 'app/screens/Routing'
+import { CommonActions } from '@react-navigation/native'
 
-function OnboardingScreen({ navigation, accountInfo, saveAccountOnboarding }) {
+interface Props {
+  navigation: OnboardingScreenNavigationProp,
+}
+
+const OnboardingScreen: React.FC<Props> = ({ navigation }) => {
+
+  const { saveAccountOnboarding } = useAccountStore()
 
   const goHome = () => {
     saveAccountOnboarding()
-    accountInfo()
+    
+    navigation.dispatch(
+      CommonActions.reset({
+        routes:[
+          { name: "Home" },
+        ]
+      })
+    )
   }
 
   return (
@@ -33,9 +46,4 @@ function OnboardingScreen({ navigation, accountInfo, saveAccountOnboarding }) {
   )
 }
 
-const mapDispatchToProps = {
-  accountInfo: AccountAction.accountInfo,
-  saveAccountOnboarding: AccountAction.saveAccountOnboarding
-}
-
-export default connect(null, mapDispatchToProps)(OnboardingScreen);
+export default OnboardingScreen;

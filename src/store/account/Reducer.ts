@@ -1,49 +1,37 @@
 import baseReducer from 'app/store/utilities/baseReducer'
 import { StateMachineType } from 'app/utils/statemachine'
 import { InfoUser } from 'app/utils/storage'
-import ActionType from './ActionType'
-
-export interface AccountDataState {
-  readonly state?: StateMachineType;
-  readonly error?: any;
-  readonly value?: InfoUser | null;
-}
+import ActionType from 'app/store/account/ActionType'
 
 export interface IAccountState {
-  readonly data?: AccountDataState;
+  readonly viewState?: StateMachineType;
+  readonly error?: any;
+  readonly data?: InfoUser | null;
 }
 
 const initialState: IAccountState = {
-  data: {
-    state: StateMachineType.NotStarted,
-    error: null,
-    value: null,
-  }
+  viewState: StateMachineType.NotStarted,
+  error: null,
+  data: null,
 }
 
-const accountReducer = baseReducer(initialState, {
-  [ActionType.ACCOUNT_INFO_DATA_STATE](
+export default baseReducer(initialState, {
+  [ActionType.ACCOUNT_INFO_VIEW_STATE](
     state,
     action,
   ) {
     return {
       ...state,
-      data: {
-        ...state.data, 
-        state: action.payload,
-      }
+      viewState: action.payload,
     }
   },
-  [ActionType.ACCOUNT_INFO_DATA_ERROR](
+  [ActionType.ACCOUNT_INFO_ERROR](
     state,
     action,
   ) {
     return {
       ...state,
-      data: {
-        ...state.data, 
-        error: action.payload,
-      }
+      error: action.payload,
     }
   },
   [ActionType.ACCOUNT_INFO_DATA](
@@ -52,12 +40,7 @@ const accountReducer = baseReducer(initialState, {
   ) {
     return {
       ...state,
-      data: {
-        ...state.data, 
-        value: action.payload,
-      }
+      data: action.payload,
     }
   },
 })
-
-export default accountReducer

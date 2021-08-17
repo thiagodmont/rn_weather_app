@@ -8,60 +8,42 @@ import Thunderstorm from 'app/assets/thunderstorm.svg'
 import Snow from 'app/assets/snow.svg'
 import Onboarding from 'app/assets/onboarding.svg'
 
-interface Spaces {
-  XXSmall: 2;
-  XSmall: 4;
-  Small: 8;
-  Medium: 16;
-  Large: 32;
-  XLarge: 64;
+export enum Spaces {
+  XXSmall = 2,
+  XSmall = 4,
+  Small = 8,
+  Medium = 16,
+  Large = 32,
+  XLarge = 64
 }
 
-interface FontSize {
-  Level1: 48;
-  Level2: 38;
-  Level3: 28;
-  Level4: 24;
-  MediumBody: 18;
-  SmallBody: 14;
+export enum FontSize {
+  SmallBody = 14,
+  MediumBody = 18,
+  Level4 = 24,
+  Level3 = 28,
+  Level2 = 38,
+  Level1 = 48,
 }
 
-interface Colors {
-  primary: string;
-  secondary: string;
-  background: string;
-  danger: string;
-}
-
-export const useSpaces = (): Spaces => {
-  return {
-    XXSmall: 2,
-    XSmall: 4,
-    Small: 8,
-    Medium: 16,
-    Large: 32,
-    XLarge: 64
-  }
-}
-
-export const useFontSize = (): FontSize => {
-  return {
-    SmallBody: 14,
-    MediumBody: 18,
-    Level4: 24,
-    Level3: 28,
-    Level2: 38,
-    Level1: 48,
-  }
-}
-
-export const useColors = (): Colors => {
-  return {
-    primary: '#264653',
-    secondary: '#2a9d8f',
-    background: '#FFFFFF',
-    danger: '#EC4E20'
-  }
+export enum Colors {
+  Primary = "#9374b7",
+  Secondary = "#6282CD",
+  White = "#FFFFFF",
+  Black = "#0D0B0B",
+  Red = "#EB5757",
+  Orange = "#F2994A",
+  Yellow = "#F2C94C",
+  Grey = "#C9CED6",
+  GreyLight = "#F1F2F4",
+  GreyMedium = "#E1E4E8",
+  GreyDark = "#828282",
+  Blue = "#2D9CDB",
+  BlueLight = "#56CCF2",
+  BlueMedium = "#2F80ED",
+  Green = "#27AE60",
+  GreenLight = "#6FCF97",
+  GreenMedium = "#219653",
 }
 
 export const Vector = {
