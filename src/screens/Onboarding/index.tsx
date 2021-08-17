@@ -7,8 +7,8 @@ import * as AccountAction from 'app/store/account/Action'
 
 function OnboardingScreen({ navigation, accountInfo }) {
 
-  const goHome = async () => {
-    await setInfoUser({ onboarding: false })
+  const goHome = () => {
+    setInfoUser({ onboarding: false })
     accountInfo()
   }
 
@@ -18,7 +18,7 @@ function OnboardingScreen({ navigation, accountInfo }) {
 
       <Button
         text="Iniciar"
-        onPress={() => goHome()}
+        onPress={ () => goHome() }
       />
     </View>
   )

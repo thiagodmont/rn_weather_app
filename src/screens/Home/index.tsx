@@ -14,7 +14,7 @@ import { Vector } from 'app/design'
 import ComponentStyle from 'app/screens/Home/styles'
 import ManagerDate from 'app/utils/manager_date'
 
-type Props = {
+interface Props {
   route: HomeScreenRouteProp;
   navigation: HomeScreenNavigationProp;
   data: CityDataState;
@@ -26,7 +26,7 @@ function HomeScreen({ navigation, data, hasCities, getStoreCities }: Props) {
 
   useFocusEffect(useCallback(() => {
       getStoreCities()
-    }, [])
+    }, [getStoreCities])
   )
 
   const renderItem = ({ item }) => (

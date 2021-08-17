@@ -3,7 +3,7 @@ import Config from "app/utils/config"
 export type ApiResult<T = any> = Promise<{ hasError: boolean; data: T }>
 
 class FetchApi {
-  url: any;
+  url: string;
 
   constructor (url: any) {
     this.url = url;
@@ -41,9 +41,9 @@ class FetchApi {
     return code === FetchApi.HttpErrorBadRequest || code === FetchApi.HttpErrorUnauthorized || code === FetchApi.HttpErrorForbidden || code === FetchApi.HttpErrorNotFound
   }
 
-  async get (service: any): Promise<any> {
+  async get (service: string): Promise<any> {
 
-    let options: any = {
+    const options: any = {
       method: 'GET',
     }
 
@@ -60,4 +60,4 @@ class FetchApi {
   }
 }
 
-export default FetchApi
+export default FetchApi;
