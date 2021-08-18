@@ -1,30 +1,18 @@
 import React, { useCallback } from 'react'
 import { Text, View, FlatList } from 'react-native'
-import { connect } from 'react-redux'
-import { useFocusEffect } from "@react-navigation/native"
-import { AppState } from 'app/store'
+import { useFocusEffect } from '@react-navigation/native'
 import { t } from 'app/locale'
-import { HomeScreenRouteProp } from 'app/screens/Routing'
 import Button from 'app/components/atom/Button'
-import { CityDataState } from 'app/store/city/Reducer'
-import * as CityAction from 'app/store/city/Action'
 import CityWeather from 'app/components/molecule/CityWeather'
 import { Vector } from 'app/design'
-
-import ComponentStyle from 'app/screens/Home/styles'
 import ManagerDate from 'app/utils/manager_date'
 import useNav from 'app/navigation'
+import { useCityStore } from 'app/store/city/Hooks'
+import ComponentStyle from 'app/screens/Home/styles'
 
-interface Props {
-  route: HomeScreenRouteProp;
-  data: CityDataState;
-  hasCities: boolean | undefined;
-  getStoreCities: () => void;
-}
-
-function HomeScreen({ data, hasCities, getStoreCities }: Props) {
-
+function HomeScreen() {
   const { navToDetail, navToFindCity } = useNav()
+  const { data, hasData, getStoreCities } = useCityStore()
 
   useFocusEffect(useCallback(() => {
       getStoreCities()
@@ -42,11 +30,11 @@ function HomeScreen({ data, hasCities, getStoreCities }: Props) {
     <ComponentStyle>
       {style => (
         <View style={style.container}>
-          {hasCities ? (
+          {hasData ? (
             <View>
               <Text style={style.descriptionText}>{ManagerDate.now}</Text>
               <FlatList
-                data={data?.cities}
+                data={data}
                 renderItem={renderItem}
                 ItemSeparatorComponent={() => <View style={style.spacer} />}
                 keyExtractor={item => item.id.toString()}
@@ -79,15 +67,4 @@ function HomeScreen({ data, hasCities, getStoreCities }: Props) {
   )
 }
 
-const mapStateToProps = ({ city }: AppState) => {
-  return {
-    data: city.data,
-    hasCities: city.data.cities.length > 0 || false
-  }
-}
-
-const mapDispatchToProps = {
-  getStoreCities: CityAction.getStoreCities,
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(HomeScreen)
+export default HomeScreen

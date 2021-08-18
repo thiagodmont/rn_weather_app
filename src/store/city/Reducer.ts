@@ -3,22 +3,16 @@ import { StateMachineType } from 'app/utils/statemachine'
 import { City } from 'app/utils/weather'
 import ActionType from './ActionType'
 
-export interface CityDataState {
-  readonly state: StateMachineType;
-  readonly error?: any;
-  readonly cities: City[];
-}
-
 export interface ICityState {
-  readonly data: CityDataState;
+  readonly viewState: StateMachineType;
+  readonly data: City[];
+  readonly error?: any;
 }
 
 const initialState: ICityState = {
-  data: {
-    state: StateMachineType.NotStarted,
-    error: null,
-    cities: [],
-  }
+  viewState: StateMachineType.NotStarted,
+  data: [],
+  error: null
 }
 
 const cityReducer = baseReducer(initialState, {
@@ -28,10 +22,7 @@ const cityReducer = baseReducer(initialState, {
   ) {
     return {
       ...state,
-      data: {
-        ...state.data, 
-        state: action.payload,
-      }
+      viewState: action.payload,
     }
   },
   [ActionType.CITY_DATA_ERROR](
@@ -40,10 +31,7 @@ const cityReducer = baseReducer(initialState, {
   ) {
     return {
       ...state,
-      data: {
-        ...state.data, 
-        error: action.payload,
-      }
+      error: action.payload,
     }
   },
   [ActionType.CITY_DATA](
@@ -52,10 +40,7 @@ const cityReducer = baseReducer(initialState, {
   ) {
     return {
       ...state,
-      data: {
-        ...state.data, 
-        cities: action.payload,
-      }
+      data: action.payload,
     }
   },
 })

@@ -1,20 +1,17 @@
 import * as React from 'react'
 import { View, Text, SafeAreaView } from 'react-native'
-import { connect } from 'react-redux'
 import Button from 'app/components/atom/Button'
 import { DetailScreenRouteProp } from 'app/screens/Routing'
 import Weather from 'app/utils/weather'
-import * as CityAction from 'app/store/city/Action'
 import useNav from 'app/navigation'
+import { useCityStore } from 'app/store/city/Hooks'
+import { useRoute } from '@react-navigation/native'
 import ComponentStyle from 'app/screens/Detail/styles'
 
-type Props = {
-  route: DetailScreenRouteProp;
-  removeCities: (id: number) => Promise<void>;
-}
-
-function DetailScreen({ route, removeCities }: Props) {
+function DetailScreen() {
   const { navGoBack } = useNav()
+  const { removeCities } = useCityStore()
+  const route = useRoute<DetailScreenRouteProp>()
   const { city } = route.params
 
   const handleRemoveCity = async () => {
@@ -58,8 +55,4 @@ function DetailScreen({ route, removeCities }: Props) {
   )
 }
 
-const mapDispatchToProps = {
-  removeCities: CityAction.removeCities,
-}
-
-export default connect(null, mapDispatchToProps)(DetailScreen)
+export default DetailScreen
