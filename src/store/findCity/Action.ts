@@ -26,5 +26,15 @@ export const findWeatherCity = (city: string) => async (dispatch: Dispatch) => {
   return result
 }
 
-export const findWeatherCityById = (id: number) => async (dispatch: Dispatch) =>
-  FindCityEffect.findWeatherCityById(id)
+export const findWeatherCityById = (id: number) => async (dispatch: Dispatch) => {
+  const result = await FindCityEffect.findWeatherCityById(id)
+
+  if (!result.hasError) {
+    const cityWeatherData = result.data
+    const [weather] = cityWeatherData.weather
+
+    cityWeatherData.weather = weather
+
+    await addCity(cityWeatherData)
+  }
+}

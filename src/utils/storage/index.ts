@@ -59,21 +59,25 @@ export const getCities = async (): Promise<City[]> => {
 }
 
 export const addCity = async (city: City): Promise<void> => {
-  const cities = await getCities()
+  let cities = await getCities()
 
-  const checkCity = cities.find(c => c.id === city.id)
+  const checkCity = cities.some(c => c.id === city.id)
 
   if (checkCity) {
-    await removeCity(city.id)
+    cities = await removeCity(city.id)
   }
 
   await set(Keys.Cities, { data: [...cities, city] })
 }
 
-export const removeCity = async (id: number): Promise<void> => {
+export const removeCity = async (id: number): Promise<City[]> => {
   const cities = await getCities()
 
-  await set(Keys.Cities, { data: cities.filter(city => city.id !== id) })
+  const removedData = cities.filter(city => city.id !== id)
+
+  await set(Keys.Cities, { data: removedData })
+
+  return removedData
 }
 
 export const clear = async () => await AsyncStorage.clear()
