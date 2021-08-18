@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import { useFocusEffect } from "@react-navigation/native"
 import { AppState } from 'app/store'
 import { t } from 'app/locale'
-import { HomeScreenNavigationProp, HomeScreenRouteProp } from 'app/screens/Routing'
+import { HomeScreenRouteProp } from 'app/screens/Routing'
 import Button from 'app/components/atom/Button'
 import { CityDataState } from 'app/store/city/Reducer'
 import * as CityAction from 'app/store/city/Action'
@@ -13,16 +13,18 @@ import { Vector } from 'app/design'
 
 import ComponentStyle from 'app/screens/Home/styles'
 import ManagerDate from 'app/utils/manager_date'
+import useNav from 'app/navigation'
 
 interface Props {
   route: HomeScreenRouteProp;
-  navigation: HomeScreenNavigationProp;
   data: CityDataState;
   hasCities: boolean | undefined;
   getStoreCities: () => void;
 }
 
-function HomeScreen({ navigation, data, hasCities, getStoreCities }: Props) {
+function HomeScreen({ data, hasCities, getStoreCities }: Props) {
+
+  const { navToDetail, navToFindCity } = useNav()
 
   useFocusEffect(useCallback(() => {
       getStoreCities()
@@ -33,7 +35,7 @@ function HomeScreen({ navigation, data, hasCities, getStoreCities }: Props) {
     <CityWeather 
       key={item.id} 
       city={item}
-      onPress={() => navigation.navigate("Detail", { city: item })} />
+      onPress={() => navToDetail(item)} />
   )
 
   return (
@@ -52,7 +54,7 @@ function HomeScreen({ navigation, data, hasCities, getStoreCities }: Props) {
 
               <Button
                 text="Adicionar cidades"
-                onPress={() => navigation.navigate("FindCity")}
+                onPress={() => navToFindCity()}
                 style={style.floatButton}
               />
             </View>
@@ -63,7 +65,7 @@ function HomeScreen({ navigation, data, hasCities, getStoreCities }: Props) {
 
               <Button
                 text="Adicionar cidades"
-                onPress={() => navigation.navigate("FindCity")}
+                onPress={() => navToFindCity()}
               />
 
               <View style={style.sunny}>

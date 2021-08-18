@@ -2,24 +2,24 @@ import * as React from 'react'
 import { View, Text, SafeAreaView } from 'react-native'
 import { connect } from 'react-redux'
 import Button from 'app/components/atom/Button'
-import { DetailScreenNavigationProp, DetailScreenRouteProp } from 'app/screens/Routing'
+import { DetailScreenRouteProp } from 'app/screens/Routing'
 import Weather from 'app/utils/weather'
-import ComponentStyle from 'app/screens/Detail/styles'
 import * as CityAction from 'app/store/city/Action'
+import useNav from 'app/navigation'
+import ComponentStyle from 'app/screens/Detail/styles'
 
 type Props = {
   route: DetailScreenRouteProp;
-  navigation: DetailScreenNavigationProp;
   removeCities: (id: number) => Promise<void>;
 }
 
-function DetailScreen({ navigation, route, removeCities }: Props) {
-
+function DetailScreen({ route, removeCities }: Props) {
+  const { navGoBack } = useNav()
   const { city } = route.params
 
   const handleRemoveCity = async () => {
     await removeCities(city.id)
-    navigation.goBack()
+    navGoBack()
   }
 
   return (
@@ -38,19 +38,19 @@ function DetailScreen({ navigation, route, removeCities }: Props) {
 
             <View style={style.infoBox}>
               <View style={style.infoBoxData}>
-                <Text>Wind</Text>
-                <Text>33 m/h</Text>
+                <Text>Min.</Text>
+                <Text>{Weather.convertTemperatureToCelsius(city.main?.temp_min)}</Text>
               </View>
               <View style={style.infoBoxData}>
-                <Text>Wind</Text>
-                <Text>33 m/h</Text>
+                <Text>Max.</Text>
+                <Text>{Weather.convertTemperatureToCelsius(city.main?.temp_max)}</Text>
               </View>
             </View>
           </View>
           <Button
             style={style.button}
             text="Remover cidade"
-            onPress={() => handleRemoveCity()}
+            onPress={async () => await handleRemoveCity()}
           />
         </SafeAreaView>
       )}
@@ -62,4 +62,4 @@ const mapDispatchToProps = {
   removeCities: CityAction.removeCities,
 }
 
-export default connect(null, mapDispatchToProps)(DetailScreen);
+export default connect(null, mapDispatchToProps)(DetailScreen)

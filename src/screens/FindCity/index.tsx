@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import { View, Text } from 'react-native'
 import { connect } from 'react-redux'
-import ComponentStyle from 'app/screens/FindCity/styles'
 import Input from 'app/components/atom/Input'
 import Button from 'app/components/atom/Button'
 import * as FindCityAction from 'app/store/findCity/Action'
@@ -10,22 +9,23 @@ import { FindCityDataState } from 'app/store/findCity/Reducer'
 import StateMachine from 'app/utils/statemachine'
 import ErrorText from 'app/components/atom/ErrorText'
 import { t } from 'app/locale'
-import { FindCityScreenNavigationProp } from 'app/screens/Routing'
+import useNav from 'app/navigation'
+import ComponentStyle from 'app/screens/FindCity/styles'
 
 type Props = {
-  navigation: FindCityScreenNavigationProp;
   data: FindCityDataState | undefined;
   findWeatherCity: (city: string) => Promise<{ hasError: boolean }>;
 }
 
-function FindCityScreen({ navigation, data, findWeatherCity }: Props) {
+function FindCityScreen({ data, findWeatherCity }: Props) {
   const [inputCity, setInputCity] = useState("")
+  const { navToHome } = useNav()
 
   const handleFindCity = async () => {
     const result = await findWeatherCity(inputCity)
 
     if (!result.hasError) {
-      navigation.navigate("Home")
+      navToHome()
     }
   }
 
@@ -48,7 +48,7 @@ function FindCityScreen({ navigation, data, findWeatherCity }: Props) {
           <Button
             text="Procurar"
             style={style.button}
-            onPress={() => handleFindCity()}
+            onPress={async () => await handleFindCity()}
             loading={StateMachine.isLoading(data?.state)}
           />
         </View>
@@ -67,4 +67,4 @@ const mapDispatchToProps = {
   findWeatherCity: FindCityAction.findWeatherCity,
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(FindCityScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(FindCityScreen)

@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { t } from 'app/locale'
 
-import { NavigationContainer, DefaultTheme, RouteProp } from '@react-navigation/native'
+import { NavigationContainer, RouteProp } from '@react-navigation/native'
 import { createStackNavigator, StackNavigationProp } from '@react-navigation/stack'
 
 import Loading from 'app/components/atom/Loading'
@@ -13,8 +13,12 @@ import DetailScreen from 'app/screens/Detail'
 
 import { StateMachineType } from 'app/utils/statemachine'
 import { City } from 'app/utils/weather'
-import { Colors } from 'app/design'
 import { useAccountStore } from 'app/store/account/Hooks'
+
+export const NavOnboarding = "Onboarding"
+export const NavHome = "Home"
+export const NavFindCity = "FindCity"
+export const NavDetail = "Detail"
 
 type RootStackParamList = {
   Onboarding: undefined;
@@ -37,15 +41,6 @@ export type DetailScreenNavigationProp = StackNavigationProp<RootStackParamList,
 
 const RootStack = createStackNavigator()
 
-const MyTheme = {
-  ...DefaultTheme,
-  colors: {
-    ...DefaultTheme.colors,
-    primary: Colors.Primary,
-    background: Colors.White,
-  }
-}
-
 function Routing() {
   const { data, viewState, accountInfo } = useAccountStore()
 
@@ -58,17 +53,17 @@ function Routing() {
   const renderStateLoading = () => <Loading />
   
   const renderStateLoaded = () => (
-    <NavigationContainer theme={MyTheme}>
-      <RootStack.Navigator initialRouteName={data?.onboarding? "Onboarding" : "Home"}>
+    <NavigationContainer>
+      <RootStack.Navigator initialRouteName={data?.onboarding? NavOnboarding : NavHome}>
         <RootStack.Screen 
-          name="Home" 
+          name={NavHome} 
           component={HomeScreen}
           options={{
             title: t("cities"),
           }} />
-        <RootStack.Screen name="Onboarding" component={OnboardingScreen} />
-        <RootStack.Screen name="FindCity" component={FindCityScreen} />
-        <RootStack.Screen name="Detail" component={DetailScreen} />
+        <RootStack.Screen name={NavOnboarding} component={OnboardingScreen} />
+        <RootStack.Screen name={NavFindCity} component={FindCityScreen} />
+        <RootStack.Screen name={NavDetail} component={DetailScreen} />
       </RootStack.Navigator>
     </NavigationContainer>
   )
