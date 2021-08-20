@@ -74,7 +74,7 @@ function Routing() {
   )
 
   const rendering = () => {
-    switch(viewState) {
+    switch(viewState.state) {
       case StateMachineType.NotStarted:
         return renderStateNotStarted()
       case StateMachineType.Loading:

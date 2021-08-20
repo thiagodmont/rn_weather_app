@@ -1,5 +1,5 @@
 import { Dispatch } from 'redux'
-import { StateMachineType } from 'app/utils/statemachine'
+import StateMachine from 'app/utils/statemachine'
 import * as ActionUtility from 'app/store/utilities/actionUtility'
 import ActionType from 'app/store/findCity/ActionType'
 import FetchApi, { ApiResult } from 'app/utils/fetch'
@@ -22,7 +22,7 @@ export const findWeatherCityById = async (id: number): ApiResult => {
   }
 }
 
-export const setState = (dispatch: Dispatch, payload: StateMachineType) =>
+export const setState = (dispatch: Dispatch, payload: StateMachine) =>
   dispatch(ActionUtility.createAction(ActionType.FIND_CITY_VIEW_STATE, payload))
 
 export const setData = (dispatch: Dispatch, payload: any) =>

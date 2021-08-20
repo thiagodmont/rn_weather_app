@@ -1,14 +1,14 @@
 import { Dispatch } from 'redux'
-import { StateMachineType } from 'app/utils/statemachine'
+import StateMachine from 'app/utils/statemachine'
 import * as Effect from 'app/store/account/Effect'
 
 export const accountInfo = () => async (dispatch: Dispatch) => {
-  Effect.setState(dispatch, StateMachineType.Loading)
+  Effect.setState(dispatch, StateMachine.Loading)
 
   const account = await Effect.fetchInfoUser()
   Effect.setData(dispatch, account.data)
   
-  Effect.setState(dispatch, StateMachineType.Loaded)
+  Effect.setState(dispatch, StateMachine.Loaded)
 }
 
 export const saveAccountOnboarding = () => async () => {

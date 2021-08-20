@@ -1,16 +1,16 @@
 import baseReducer from 'app/store/utilities/baseReducer'
-import { StateMachineType } from 'app/utils/statemachine'
+import StateMachine from 'app/utils/statemachine'
 import { InfoUser } from 'app/utils/storage'
 import ActionType from 'app/store/account/ActionType'
 
 export interface IAccountState {
-  readonly viewState?: StateMachineType;
+  readonly viewState: StateMachine;
   readonly error?: any;
-  readonly data?: InfoUser | null;
+  readonly data: InfoUser | null;
 }
 
 const initialState: IAccountState = {
-  viewState: StateMachineType.NotStarted,
+  viewState: StateMachine.NotStarted,
   error: null,
   data: null,
 }

@@ -42,7 +42,7 @@ function FindCityScreen() {
             text="Procurar"
             style={style.button}
             onPress={async () => await handleFindCity()}
-            loading={StateMachine.isLoading(viewState)}
+            loading={viewState.isLoading}
           />
         </View>
       )}

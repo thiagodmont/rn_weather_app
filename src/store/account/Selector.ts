@@ -6,8 +6,8 @@ import StateMachine from 'app/utils/statemachine'
 import { InfoUser } from 'app/utils/storage'
 
 export interface AccountSelector {
-  data?: InfoUser | null,
-  viewState?: StateMachine,
+  data: InfoUser | null,
+  viewState: StateMachine,
   error?: ErrorPayload | null,
 }
 

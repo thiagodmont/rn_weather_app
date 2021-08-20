@@ -2,12 +2,12 @@ import { createSelector } from 'reselect'
 import { AppState } from 'app/store'
 import { IFindCityState } from 'app/store/findCity/Reducer'
 import { ErrorPayload } from 'app/utils/fetch/interface'
-import { StateMachineType } from 'app/utils/statemachine'
+import StateMachine from 'app/utils/statemachine'
 import { City } from 'app/utils/weather'
 
 export interface FindCitySelector {
   data: City | null,
-  viewState: StateMachineType,
+  viewState: StateMachine,
   error?: ErrorPayload | null,
 }
 

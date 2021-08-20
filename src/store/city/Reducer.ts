@@ -1,16 +1,16 @@
 import baseReducer from 'app/store/utilities/baseReducer'
-import { StateMachineType } from 'app/utils/statemachine'
+import StateMachine from 'app/utils/statemachine'
 import { City } from 'app/utils/weather'
 import ActionType from './ActionType'
 
 export interface ICityState {
-  readonly viewState: StateMachineType;
+  readonly viewState: StateMachine;
   readonly data: City[];
   readonly error?: any;
 }
 
 const initialState: ICityState = {
-  viewState: StateMachineType.NotStarted,
+  viewState: StateMachine.NotStarted,
   data: [],
   error: null
 }

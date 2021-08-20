@@ -1,11 +1,10 @@
 import { Dispatch } from 'redux'
-import { StateMachineType } from 'app/utils/statemachine'
+import StateMachine from 'app/utils/statemachine'
 import * as Effect from 'app/store/findCity/Effect'
-import * as CityAction from 'app/store/city/Action'
 import { addCity } from 'app/utils/storage'
 
 export const findWeatherCity = (city: string) => async (dispatch: Dispatch) => {
-  Effect.setState(dispatch, StateMachineType.Loading)
+  Effect.setState(dispatch, StateMachine.Loading)
   Effect.setError(dispatch, null)
 
   const result = await Effect.findWeatherCity(city)
@@ -22,7 +21,7 @@ export const findWeatherCity = (city: string) => async (dispatch: Dispatch) => {
     Effect.setData(dispatch, result.data)
   }
   
-  Effect.setState(dispatch, StateMachineType.Loaded)
+  Effect.setState(dispatch, StateMachine.Loaded)
 
   return result
 }

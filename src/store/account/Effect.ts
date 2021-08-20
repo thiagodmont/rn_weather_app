@@ -1,5 +1,5 @@
 import { Dispatch } from 'redux'
-import { StateMachineType } from 'app/utils/statemachine'
+import StateMachine from 'app/utils/statemachine'
 import { getInfoUser, InfoUser, setInfoUser } from 'app/utils/storage'
 import * as ActionUtility from 'app/store/utilities/actionUtility'
 import ActionType from 'app/store/account/ActionType'
@@ -25,7 +25,7 @@ export const updateInfoUser = async (data: InfoUser) => {
   return await setInfoUser(data)
 }
 
-export const setState = (dispatch: Dispatch, payload: StateMachineType) =>
+export const setState = (dispatch: Dispatch, payload: StateMachine) =>
   dispatch(ActionUtility.createAction(ActionType.ACCOUNT_INFO_VIEW_STATE, payload))
 
 export const setData = (dispatch: Dispatch, payload: any) =>
