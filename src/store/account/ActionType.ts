@@ -4,4 +4,4 @@ const ActionType = {
   ACCOUNT_INFO_ERROR: "AccountAction.ACCOUNT_INFO_ERROR",
 }
 
-export default ActionType;
+export default ActionType

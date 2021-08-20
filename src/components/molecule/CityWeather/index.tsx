@@ -1,22 +1,14 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { View, Text, TouchableOpacity } from 'react-native'
-import { connect } from 'react-redux'
 import Weather, { City } from 'app/utils/weather'
-import { ApiResult } from 'app/utils/fetch'
-import * as FindCityAction from 'app/store/findCity/Action'
-
-import ComponentStyle from './style'
+import ComponentStyle from 'app/components/molecule/CityWeather/style'
 
 type Props = {
   city: City;
   onPress?: () => void;
-  findWeatherCityById: (id: number) => ApiResult;
 }
 
-const CityWeather: React.FC<Props> = ({ city, onPress, findWeatherCityById }) => {
-  useEffect(() => {
-    findWeatherCityById(city.id)
-  }, [findWeatherCityById, city])
+const CityWeather: React.FC<Props> = ({ city, onPress }) => {
 
   return (
     <ComponentStyle> 
@@ -36,11 +28,7 @@ const CityWeather: React.FC<Props> = ({ city, onPress, findWeatherCityById }) =>
         </TouchableOpacity>
       )}
     </ComponentStyle>
-  );
-};
-
-const mapDispatchToProps = {
-  findWeatherCityById: FindCityAction.findWeatherCityById
+  )
 }
 
-export default connect(null, mapDispatchToProps)(CityWeather)
+export default CityWeather

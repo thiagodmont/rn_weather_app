@@ -15,8 +15,8 @@ const initialState: ICityState = {
   error: null
 }
 
-const cityReducer = baseReducer(initialState, {
-  [ActionType.CITY_DATA_STATE](
+export default baseReducer(initialState, {
+  [ActionType.CITY_VIEW_STATE](
     state,
     action,
   ) {
@@ -25,7 +25,7 @@ const cityReducer = baseReducer(initialState, {
       viewState: action.payload,
     }
   },
-  [ActionType.CITY_DATA_ERROR](
+  [ActionType.CITY_ERROR](
     state,
     action,
   ) {
@@ -44,5 +44,3 @@ const cityReducer = baseReducer(initialState, {
     }
   },
 })
-
-export default cityReducer

@@ -1,25 +1,18 @@
 import React, { useState } from 'react'
 import { View, Text } from 'react-native'
-import { connect } from 'react-redux'
+import { t } from 'app/locale'
 import Input from 'app/components/atom/Input'
 import Button from 'app/components/atom/Button'
-import * as FindCityAction from 'app/store/findCity/Action'
-import { AppState } from 'app/store'
-import { FindCityDataState } from 'app/store/findCity/Reducer'
 import StateMachine from 'app/utils/statemachine'
 import ErrorText from 'app/components/atom/ErrorText'
-import { t } from 'app/locale'
 import useNav from 'app/navigation'
+import { useFindCityStore } from 'app/store/findCity/Hooks'
 import ComponentStyle from 'app/screens/FindCity/styles'
 
-type Props = {
-  data: FindCityDataState | undefined;
-  findWeatherCity: (city: string) => Promise<{ hasError: boolean }>;
-}
-
-function FindCityScreen({ data, findWeatherCity }: Props) {
+function FindCityScreen() {
   const [inputCity, setInputCity] = useState("")
   const { navToHome } = useNav()
+  const { viewState, error, findWeatherCity } = useFindCityStore()
 
   const handleFindCity = async () => {
     const result = await findWeatherCity(inputCity)
@@ -41,7 +34,7 @@ function FindCityScreen({ data, findWeatherCity }: Props) {
             onChangeText={(text: string) => setInputCity(text)}
           />
 
-          {data?.error && (
+          {error && (
             <ErrorText message={t('error_find_city')} />
           )}
 
@@ -49,7 +42,7 @@ function FindCityScreen({ data, findWeatherCity }: Props) {
             text="Procurar"
             style={style.button}
             onPress={async () => await handleFindCity()}
-            loading={StateMachine.isLoading(data?.state)}
+            loading={StateMachine.isLoading(viewState)}
           />
         </View>
       )}
@@ -57,14 +50,4 @@ function FindCityScreen({ data, findWeatherCity }: Props) {
   )
 }
 
-const mapStateToProps = ({ findCity }: AppState) => {
-  return {
-    data: findCity?.data,
-  }
-}
-
-const mapDispatchToProps = {
-  findWeatherCity: FindCityAction.findWeatherCity,
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(FindCityScreen)
+export default FindCityScreen

@@ -1,6 +1,5 @@
-import { StyleSheet, TextStyle, ViewStyle } from "react-native"
-import { useTheme } from '@react-navigation/native'
-import { FontSize, Spaces, Colors } from "app/design";
+import { StyleSheet, TextStyle, ViewStyle } from 'react-native'
+import { FontSize, Spaces, Colors } from 'app/design'
 
 export interface Styles {
   container: ViewStyle;

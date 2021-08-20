@@ -1,49 +1,37 @@
 import baseReducer from 'app/store/utilities/baseReducer'
 import { StateMachineType } from 'app/utils/statemachine'
-import { City } from 'app/utils/storage'
-import ActionType from './ActionType'
-
-export interface FindCityDataState {
-  readonly state?: StateMachineType;
-  readonly error?: any;
-  readonly city?: City | null;
-}
+import { City } from 'app/utils/weather'
+import ActionType from 'app/store/findCity/ActionType'
 
 export interface IFindCityState {
-  readonly data?: FindCityDataState;
+  readonly viewState: StateMachineType;
+  readonly error?: any;
+  readonly data: City | null;
 }
 
 const initialState: IFindCityState = {
-  data: {
-    state: StateMachineType.NotStarted,
-    error: null,
-    city: null,
-  }
+  viewState: StateMachineType.NotStarted,
+  error: null,
+  data: null,
 }
 
-const findCityReducer = baseReducer(initialState, {
-  [ActionType.FIND_CITY_DATA_STATE](
+export default baseReducer(initialState, {
+  [ActionType.FIND_CITY_VIEW_STATE](
     state,
     action,
   ) {
     return {
       ...state,
-      data: {
-        ...state.data, 
-        state: action.payload,
-      }
+      viewState: action.payload,
     }
   },
-  [ActionType.FIND_CITY_DATA_ERROR](
+  [ActionType.FIND_CITY_ERROR](
     state,
     action,
   ) {
     return {
       ...state,
-      data: {
-        ...state.data, 
-        error: action.payload,
-      }
+      error: action.payload,
     }
   },
   [ActionType.FIND_CITY_DATA](
@@ -52,12 +40,7 @@ const findCityReducer = baseReducer(initialState, {
   ) {
     return {
       ...state,
-      data: {
-        ...state.data, 
-        city: action.payload,
-      }
+      data: action.payload,
     }
   },
 })
-
-export default findCityReducer

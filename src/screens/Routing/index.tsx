@@ -55,14 +55,19 @@ function Routing() {
   const renderStateLoaded = () => (
     <NavigationContainer>
       <RootStack.Navigator initialRouteName={data?.onboarding? NavOnboarding : NavHome}>
+        <RootStack.Screen name={NavOnboarding} component={OnboardingScreen} />
         <RootStack.Screen 
           name={NavHome} 
           component={HomeScreen}
           options={{
             title: t("cities"),
           }} />
-        <RootStack.Screen name={NavOnboarding} component={OnboardingScreen} />
-        <RootStack.Screen name={NavFindCity} component={FindCityScreen} />
+        <RootStack.Screen 
+          name={NavFindCity} 
+          component={FindCityScreen}
+          options={{
+            title: t("find"),
+          }} />
         <RootStack.Screen name={NavDetail} component={DetailScreen} />
       </RootStack.Navigator>
     </NavigationContainer>

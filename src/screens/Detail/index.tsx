@@ -1,11 +1,11 @@
 import * as React from 'react'
 import { View, Text, SafeAreaView } from 'react-native'
+import { useRoute } from '@react-navigation/native'
 import Button from 'app/components/atom/Button'
 import { DetailScreenRouteProp } from 'app/screens/Routing'
 import Weather from 'app/utils/weather'
 import useNav from 'app/navigation'
 import { useCityStore } from 'app/store/city/Hooks'
-import { useRoute } from '@react-navigation/native'
 import ComponentStyle from 'app/screens/Detail/styles'
 
 function DetailScreen() {
