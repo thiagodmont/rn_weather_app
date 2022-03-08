@@ -1,17 +1,15 @@
 import React from 'react'
-import { SafeAreaView, Text, ActivityIndicator } from 'react-native'
-import ComponentStyle from './styles'
+import { ActivityIndicator } from 'react-native'
+import { Colors } from 'app/design'
 
-const Loading: React.FC<any> = () => {
+interface Props {
+  size?: "small" | "large",
+  color?: Colors
+}
+
+const Loading: React.FC<Props> = ({ size = "small", color = Colors.Secondary }) => {
   return (
-    <ComponentStyle>
-      {style => (
-        <SafeAreaView style={style.container}>
-          <Text style={style.loadingText}>Carregando aguarde...</Text>
-          <ActivityIndicator size="large" />
-        </SafeAreaView>
-      )}
-    </ComponentStyle>
+    <ActivityIndicator size={size} color={color} />
   )
 }
 

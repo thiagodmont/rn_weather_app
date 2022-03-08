@@ -18,6 +18,8 @@
     "i18n-js": "3.8.0",
     "react": "17.0.2",
     "react-native": "0.65.0",
+    "react-native-device-info": "^8.5.0",
+    "react-native-fast-image": "^8.5.11",
     "react-native-gesture-handler": "1.10.3",
     "react-native-reanimated": "2.0.0",
     "react-native-safe-area-context": "3.2.0",

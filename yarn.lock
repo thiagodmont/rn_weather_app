@@ -6696,6 +6696,16 @@ react-native-codegen@0.0.7:
     jscodeshift "^0.11.0"
     nullthrows "^1.1.1"
 
+react-native-device-info@^8.5.0:
+  version "8.5.0"
+  resolved "https://registry.yarnpkg.com/react-native-device-info/-/react-native-device-info-8.5.0.tgz#b6c60c0bd467685fe4d1550322d630e2287c57aa"
+  integrity sha512-Y5mSYWvVvlpKbN3hkA+mDBqXvcgeR/jiIFaJZrsYw4LF+e3fwFl+vQgPz21IroDi9JXkA26BpxaXu3lj1P1GGg==
+
+react-native-fast-image@^8.5.11:
+  version "8.5.11"
+  resolved "https://registry.yarnpkg.com/react-native-fast-image/-/react-native-fast-image-8.5.11.tgz#e3dc969d0e4e8df026646bf18194465aa55cbc2b"
+  integrity sha512-cNW4bIJg3nvKaheG8vGMfqCt5LMWX9MS5+wMudgKIHbGO51spRr4sgnlhVgwHLcZ5aeNOVJ8CPRxDIWKRq/0QA==
+
 react-native-gesture-handler@1.10.3:
   version "1.10.3"
   resolved "https://registry.yarnpkg.com/react-native-gesture-handler/-/react-native-gesture-handler-1.10.3.tgz#942bbf2963bbf49fa79593600ee9d7b5dab3cfc0"

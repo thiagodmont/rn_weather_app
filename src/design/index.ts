@@ -26,6 +26,13 @@ export enum FontSize {
   Level1 = 48,
 }
 
+export enum FontWeight {
+  Normal = "400",
+  Medium = "500",
+  Semibold = "600",
+  Bold = "700",
+}
+
 export enum Colors {
   Primary = "#9374b7",
   Secondary = "#6282CD",
@@ -56,4 +63,39 @@ export const Vector = {
   Thunderstorm,
   Snow,
   Onboarding
+}
+
+export const calcSpaceHorizontal = (style: any): number => {
+  let total = 0
+  const { marginHorizontal, marginLeft, marginRight, paddingHorizontal, paddingLeft, paddingRight } = style
+  
+  if (marginHorizontal) { 
+    total += (marginHorizontal * 2)
+  }
+
+  if (marginLeft) { 
+    // eslint-disable-next-line @typescript-eslint/restrict-plus-operands
+    total += marginLeft
+  }
+
+  if (marginRight) { 
+    // eslint-disable-next-line @typescript-eslint/restrict-plus-operands
+    total += marginLeft
+  }
+
+  if (paddingHorizontal) { 
+    total += (paddingHorizontal * 2)
+  }
+
+  if (paddingLeft) { 
+    // eslint-disable-next-line @typescript-eslint/restrict-plus-operands
+    total += paddingLeft
+  }
+
+  if (paddingRight) { 
+    // eslint-disable-next-line @typescript-eslint/restrict-plus-operands
+    total += paddingRight
+  }
+
+  return total
 }
