@@ -33,7 +33,7 @@ const ComponentStyle: React.FC<IComponentStyle> = ({ children }) => {
       descriptionText: {
         color: "#353031",
         textAlign: 'center',
-        fontSize: FontSize.SmallBody,
+        fontSize: FontSize.Body,
         marginBottom: Spaces.Large,
       },
       sunny: {

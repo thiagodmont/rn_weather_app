@@ -132,7 +132,7 @@ function setGuideStyle({
 function withSpaceProps<P, T>(
   WrappedComponent: React.ComponentType<P>
 ) {
-  const displayName = WrappedComponent.displayName || WrappedComponent.name || "Component"
+  const displayName = WrappedComponent.displayName ?? WrappedComponent.name ?? "Component"
 
   const ComponentWithModifiers = ({
     m,

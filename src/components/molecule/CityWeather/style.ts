@@ -28,7 +28,7 @@ const ComponentStyle: React.FC<IComponentStyle> = ({ children }) => {
       },
       name: {
         color: "#353031",
-        fontSize: FontSize.SmallBody,
+        fontSize: FontSize.Body,
         marginTop: Spaces.Small,
       },
       temperature: {
@@ -39,13 +39,13 @@ const ComponentStyle: React.FC<IComponentStyle> = ({ children }) => {
       add: {
         color: "#353031",
         textAlign: 'center',
-        fontSize: FontSize.MediumBody,
+        fontSize: FontSize.Subtitle,
       },
       weather: {
         flex: 1,
       }
     }),
-  );
+  )
 }
 
 export default ComponentStyle;

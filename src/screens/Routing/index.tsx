@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import { t } from 'app/locale'
 
 import { NavigationContainer, RouteProp } from '@react-navigation/native'
-import { createStackNavigator, StackNavigationProp } from '@react-navigation/stack'
+import { createNativeStackNavigator, NativeStackNavigationProp } from '@react-navigation/native-stack'
 
 import Loading from 'app/components/atom/Loading'
 
@@ -28,18 +28,18 @@ type RootStackParamList = {
 }
 
 export type OnboardingScreenRouteProp = RouteProp<RootStackParamList, 'Onboarding'>
-export type OnboardingScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Onboarding'>
+export type OnboardingScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Onboarding'>
 
 export type HomeScreenRouteProp = RouteProp<RootStackParamList, 'Home'>
-export type HomeScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Home'>
+export type HomeScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Home'>
 
 export type FindCityScreenRouteProp = RouteProp<RootStackParamList, 'FindCity'>
-export type FindCityScreenNavigationProp = StackNavigationProp<RootStackParamList, 'FindCity'>
+export type FindCityScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'FindCity'>
 
 export type DetailScreenRouteProp = RouteProp<RootStackParamList, 'Detail'>
-export type DetailScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Detail'>
+export type DetailScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Detail'>
 
-const RootStack = createStackNavigator()
+const RootStack = createNativeStackNavigator()
 
 function Routing() {
   const { data, viewState, accountInfo } = useAccountStore()

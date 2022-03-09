@@ -40,8 +40,8 @@ const ComponentStyle: React.FC<IComponentStyle> = ({
         marginTop: getValueByScale(Space.Small),
         backgroundColor: disabled ? Colors.GreyLight : undefined,
         color: Colors.Black,
-        height: inputHeight ? inputHeight : undefined,
-        //fontFamily: "AvenirLTPro-Book",
+        height: inputHeight ?? undefined,
+        // fontFamily: "AvenirLTPro-Book",
         ...Platform.select({
           ios: {
             paddingVertical: Space.Medium
@@ -56,4 +56,3 @@ const ComponentStyle: React.FC<IComponentStyle> = ({
 };
 
 export default ComponentStyle;
-  

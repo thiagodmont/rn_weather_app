@@ -18,9 +18,13 @@ export enum Spaces {
 }
 
 export enum FontSize {
-  SmallBody = 14,
-  MediumBody = 18,
-  Level4 = 24,
+  // SmallBody = 14,
+  // MediumBody = 18,
+  // Level4 = 24,
+  Caption = 12,
+  Body = 14,
+  Subtitle = 18,
+  Title = 24,
   Level3 = 28,
   Level2 = 38,
   Level1 = 48,

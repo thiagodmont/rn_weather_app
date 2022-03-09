@@ -87,7 +87,7 @@ const List = React.forwardRef<FlatListRefProps, Props>(({
           keyExtractor={item => item[keyName]}
           showsVerticalScrollIndicator={false}
           showsHorizontalScrollIndicator={false}
-          ItemSeparatorComponent={renderSeparator ? renderSeparator : _renderSeparator}
+          ItemSeparatorComponent={renderSeparator ?? _renderSeparator}
           ListEmptyComponent={renderEmpty}
           ListFooterComponent={renderLoading} />
       )}

@@ -29,4 +29,3 @@ const ComponentStyle: React.FC<IComponentStyle> = ({
 };
 
 export default ComponentStyle;
-  

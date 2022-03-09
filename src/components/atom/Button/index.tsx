@@ -1,6 +1,6 @@
 import React from 'react'
 import { TouchableOpacity, ViewStyle } from 'react-native'
-import { Body, Loading, Image, Box } from 'app/components/atom'
+import { Loading, Image, Box } from 'app/components/atom'
 import { Colors, FontWeight } from 'app/design'
 import withModifiersProps from 'app/design/withModifiersProps'
 import withSpaceProps, { Space } from 'app/design/withSpaceProps'
@@ -49,8 +49,8 @@ const Button = ({
   const useFormContext = useForm()
   
   const onHandlePress = () => {
-    onPress && onPress()
-    onSubmit && onSubmit(useFormContext?.fieldsValue)
+    onPress?.()
+    onSubmit?.(useFormContext?.fieldsValue)
   }
 
   return (
@@ -62,7 +62,7 @@ const Button = ({
           ) : (
             <Box row centerV>
               {icon && <Image ml={iconCenter ? 0 : Space.Medium} mr={text ? Space.Small : Space.Medium} image={icon} imageFill={iconFill} size={{ width: 21, height: 21 }}  />}
-              <Text flex={!iconCenter} textCenter color={outline && !textColor ? Colors.Black : textColor || Colors.White} fontSize={18} weight={textWeight}>{text}</Text>
+              <Text flex={!iconCenter} textCenter color={outline && !textColor ? Colors.Black : textColor ?? Colors.White} fontSize={18} weight={textWeight}>{text}</Text>
               {(icon && text.length > 0 && !iconCenter) && <Box width={21} mr={Space.Medium} ml={Space.Small} />}
             </Box>
           )}

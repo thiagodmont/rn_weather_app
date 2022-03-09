@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react'
-import { TextInput, KeyboardTypeOptions, ViewStyle, NativeSyntheticEvent, NativeTouchEvent } from 'react-native'
+import { TextInput, KeyboardTypeOptions, ViewStyle } from 'react-native'
 import Voice, { SpeechResultsEvent } from '@react-native-voice/voice'
 import { Box, BoxPressable, Button, Body, Subtitle, Image  } from 'app/components/atom'
 import { Colors, FontWeight } from 'app/design'
@@ -11,7 +11,7 @@ import BottomSheet, { useBottomSheet } from 'app/components/molecule/BottomSheet
 import { ImageStatic } from 'app/components/atom/Image'
 
 export const Masks = {
-  DateAndYear: { regex: new RegExp(/^(\d{2})(\d{2}).*/), format: "$1/$2" }
+  DateAndYear: { regex: /^(\d{2})(\d{2}).*/, format: "$1/$2" }
 }
 
 type Props = {
@@ -26,7 +26,7 @@ type Props = {
   disabled?: boolean;
   debounce?: number;
   secureTextEntry?: boolean;
-  autoCompleteType?: any;
+  autoComplete?: any;
   error?: string | null;
   mask?: { regex: any; format: string };
   maxLength?: number;
@@ -46,7 +46,7 @@ function Input({
   keyboardType,
   textContentType,
   secureTextEntry,
-  autoCompleteType,
+  autoComplete,
   disabled,
   onPress,
   onPressIn,
@@ -68,38 +68,35 @@ function Input({
   const [recording, onRecording] = useState(false)
   const [voiceAvailable, setVoiceAvailable] = useState(false)
 
+  Voice.onSpeechResults = (e: SpeechResultsEvent) => {
+    const [text] = e?.value ?? [""]
+    onHandleChangeText(text)
+  }
+
   useEffect(() => {
     initialText && onChangeTextState(initialText)
     return () => clearTimeout(debounceTime.current)
   }, [initialText])
 
   useEffect(() => {
-    isSpeechAvailable()
-
-    return () => {
-      Voice.destroy().then(Voice.removeAllListeners);
-    }
-  }, [])
-
-  const onSpeechResultsHandler = (e: SpeechResultsEvent) => {
-    const [text] = e?.value || [""]
-    onHandleChangeText(text)
-  }
-
-  const isSpeechAvailable = async () => {
-    if (audioToText) {
+    async function isSpeechAvailable() {
       const available = await Voice.isAvailable()
 
       if (available) {
         setVoiceAvailable(true)
-        Voice.onSpeechResults = onSpeechResultsHandler
       } else {
         setVoiceAvailable(false)
       }
-    } else {
-      setVoiceAvailable(false)
     }
-  }
+
+    if (audioToText) {
+      isSpeechAvailable()
+    }
+
+    return () => {
+      Voice.destroy().then(Voice.removeAllListeners);
+    }
+  }, [audioToText])
 
   const onPrepareText = (text: string): string => {
     if (mask) {
@@ -121,10 +118,10 @@ function Input({
 
     if (debounce) {
       debounceTime.current = setTimeout(() => {
-        onChangeText && onChangeText(prepareText)
+        onChangeText?.(prepareText)
       }, debounce)
     } else {
-      onChangeText && onChangeText(prepareText)
+      onChangeText?.(prepareText)
     }
   }
 
@@ -154,7 +151,7 @@ function Input({
             {label && (<Body weight={FontWeight.Medium}>{label}</Body>)}
             {disabled? (
               <Box style={{...styles.input, ...styles.box}} height={multiline ? 128 : 48} centerV>
-                <Body color={Colors.GreyDark}>{textState ? textState : placeholder}</Body>
+                <Body color={Colors.GreyDark}>{textState || placeholder}</Body>
               </Box>
             ) : (
               <Box flex row style={styles.box}>
@@ -168,7 +165,7 @@ function Input({
                   secureTextEntry={secureTextEntry}
                   style={styles.input}
                   editable={!disabled}
-                  autoCompleteType={autoCompleteType}
+                  autoComplete={autoComplete}
                   clearButtonMode="always"
                   autoCapitalize="none"
                   maxLength={maxLength}

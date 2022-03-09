@@ -25,7 +25,7 @@ module.exports = {
     'react-native/no-unused-styles': 'warn',
     'react-native/no-inline-styles': 'error',
     'react-native/no-raw-text': ['warn', {
-      skip: ['CustomText']
+      skip: ['Subtitle', 'Title', 'Body', 'Caption']
     }],
     'react-native/no-single-element-style-arrays': 'warn',
     'object-curly-spacing': 'off',

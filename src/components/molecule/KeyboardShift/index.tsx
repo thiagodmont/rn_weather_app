@@ -9,11 +9,11 @@ export default function KeyboardShift (props: PropsWithChildren<{}>) {
   const keyboard = useKeyboard()
 
   useEffect(() => {
-    Keyboard.addListener('keyboardDidShow', handleKeyboardDidShow);
-    Keyboard.addListener('keyboardDidHide', handleKeyboardDidHide);
+    const keyboardDidShow = Keyboard.addListener('keyboardDidShow', handleKeyboardDidShow)
+    const keyboardDidHide = Keyboard.addListener('keyboardDidHide', handleKeyboardDidHide)
     return () => {
-      Keyboard.removeAllListeners('keyboardDidShow');
-      Keyboard.removeAllListeners('keyboardDidHide');
+      keyboardDidShow.remove()
+      keyboardDidHide.remove()
     }
   }, [])
 

@@ -1,9 +1,7 @@
 import React from "react"
-import {
-  StyleSheet,
-  Text,
-  View,
-} from "react-native"
+import { Box, Body } from "app/components/atom"
+import { Colors } from "app/design"
+import { Space } from "app/design/withSpaceProps"
 
 type Props = {
   message: string
@@ -12,20 +10,10 @@ type Props = {
 const ErrorText = ({ message = "" }: Props) => {
 
   return (
-    <View style={styles.errorContainer}>
-      <Text style={styles.errorText}>{message}</Text>
-    </View>
+    <Box pv={Space.Small}>
+      <Body color={Colors.Red}>{message}</Body>
+    </Box>
   )
 }
 
 export default ErrorText
-
-const styles = StyleSheet.create({
-  errorContainer: {
-    paddingVertical: 10,
-  },
-  errorText: {
-    fontSize: 14,
-    color: "#cc0011",
-  }
-})

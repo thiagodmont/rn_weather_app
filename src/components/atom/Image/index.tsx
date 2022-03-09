@@ -8,42 +8,14 @@ import withBorderProps from 'app/design/withBorderProps'
 import withPositionProps from 'app/design/withPositionProps'
 import ComponentStyle from 'app/components/atom/Image/styles'
 
-import SearchSVG from 'app/assets/search.svg'
-import ArrowBackSVG from 'app/assets/arrow-back.svg'
-import ArrowUpSVG from 'app/assets/arrow-up.svg'
-import ArrowDownSVG from 'app/assets/arrow-down.svg'
-import CameraSVG from 'app/assets/camera.svg'
-import NoteAddSVG from 'app/assets/note-add.svg'
-import SuccessSVG from 'app/assets/success.svg'
-import FlashSVG from 'app/assets/flash.svg'
-import FlashSelectSVG from 'app/assets/flash-select.svg'
-import CancelSVG from 'app/assets/cancel.svg'
-import TurnCameraSVG from 'app/assets/turn-camera.svg'
-import CheckSVG from 'app/assets/check.svg'
-import MicrophoneSVG from 'app/assets/microphone.svg'
-import RetakeSVG from 'app/assets/retake.svg'
-import MoreSVG from 'app/assets/more.svg'
+import CloudyDaySVG from 'app/assets/cloudy_day.svg'
 
 const ImageSVGBucket = {
-  "search": SearchSVG,
-  "arrow-back": ArrowBackSVG,
-  "arrow-up": ArrowUpSVG,
-  "arrow-down": ArrowDownSVG,
-  "camera": CameraSVG,
-  "note-add": NoteAddSVG,
-  "success": SuccessSVG,
-  "flash": FlashSVG,
-  "flash-select": FlashSelectSVG,
-  "cancel": CancelSVG,
-  "turn-camera": TurnCameraSVG,
-  "check": CheckSVG,
-  "microphone": MicrophoneSVG,
-  "retake": RetakeSVG,
-  "more": MoreSVG,
+  "cloudy_day": CloudyDaySVG,
 }
 
 const ImageStaticBucket = {
-  "logo": require("app/assets/turnable.png")
+  // "image": require("app/assets/image.png")
 }
 
 export enum ImageStatic {
@@ -80,11 +52,11 @@ const Image: React.FC<Props> = ({ image, imageFill, size, source, style = {} }) 
 
   const calcSpaces = useCallback(() => calcSpaceHorizontal(style), [style])()
 
-  const getImage = (styles: any, image: ImageStatic) => {
-    if (ImageStaticBucket[image]) {
-      return <RNImage style={styles.staticImage} source={ImageStaticBucket[image]} resizeMode="contain" />
+  const getImage = (styles: any, imageStatic: ImageStatic) => {
+    if (ImageStaticBucket[imageStatic]) {
+      return <RNImage style={styles.staticImage} source={ImageStaticBucket[imageStatic]} resizeMode="contain" />
     } else {
-      const SvgImage = ImageSVGBucket[image]
+      const SvgImage = ImageSVGBucket[imageStatic]
       const fill = imageFill ? { fill: imageFill } : {}
       return <SvgImage style={styles.staticImage} width={dynamicWidth} height={size?.height} {...fill}/>
     }

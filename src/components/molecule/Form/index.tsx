@@ -55,7 +55,7 @@ export default function Form({ children, onSubmit, onHandleFields }: Props) {
   return (
     <FormProvider>
       <FormMountValue onHandleFields={onHandleFields} />
-      {children?.map((item, index) => item && React.cloneElement(item, { key: index, onSubmit }))}
+      {Array.isArray(children) ? children.map((child, index) => React.cloneElement(child, { key: index })) : children}
     </FormProvider>
   )
 }

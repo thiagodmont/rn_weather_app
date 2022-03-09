@@ -1,5 +1,5 @@
-import { Colors, FontWeight, useFontSize } from "app/design";
-import { fontPixel } from "app/design/normalize";
+import { Colors, FontWeight, FontSize } from "app/design"
+import { fontPixel } from "app/design/normalize"
 import { StyleSheet, TextStyle } from "react-native"
 
 export interface Styles {
@@ -33,8 +33,6 @@ const ComponentStyle: React.FC<IComponentStyle> = ({
   center,
   fontSize,
 }) => {
-  const getFontSize = useFontSize()
-
   return children(
     StyleSheet.create({
       text: {
@@ -49,23 +47,22 @@ const ComponentStyle: React.FC<IComponentStyle> = ({
       },
       title: {
         ...style,
-        fontSize: getFontSize.Title,
+        fontSize: FontSize.Title,
       },
       subtitle: {
         ...style,
-        fontSize: getFontSize.Subtitle,
+        fontSize: FontSize.Subtitle,
       },
       body: {
         ...style,
-        fontSize: getFontSize.Body,
+        fontSize: FontSize.Body,
       },
       caption: {
         ...style,
-        fontSize: getFontSize.Caption,
+        fontSize: FontSize.Caption,
       },
     }),
   );
 };
 
 export default ComponentStyle;
-  

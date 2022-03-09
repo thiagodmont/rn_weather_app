@@ -21,7 +21,7 @@ const ComponentStyle: React.FC<IComponentStyle> = ({ children }) => {
         alignItems: "center"
       },
       title: {
-        fontSize: FontSize.Level4,
+        fontSize: FontSize.Title,
         marginBottom: Spaces.Large
       },
       button: {
