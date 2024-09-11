@@ -16,15 +16,14 @@
 
 ## :information_source: About
 
-This React Native educational project shows how libraries and some architectures are used in production apps. 
+Explore Modern React Native Development with This Comprehensive Weather App Project
 
-This is a weather app where you can find your city and see the temperature.
+This educational React Native project serves as a practical guide to building production-ready apps, showcasing how to effectively utilize modern libraries and architectural patterns.
 
 <div style="display: flex;">
-  <img src="https://dolabellabucket.s3.sa-east-1.amazonaws.com/Weather01.png" width="23%" style="margin-right: 1%" />
-  <img src="https://dolabellabucket.s3.sa-east-1.amazonaws.com/Weather02.png" width="23%" style="margin-right: 1%" />
-  <img src="https://dolabellabucket.s3.sa-east-1.amazonaws.com/Weather03.png" width="23%" style="margin-right: 1%"/>
-  <img src="https://dolabellabucket.s3.sa-east-1.amazonaws.com/Weather04.png" width="23%" />
+  <img src="https://dolabellabucket.s3.sa-east-1.amazonaws.com/NewWeather01.png" width="23%" style="margin-right: 1%" />
+  <img src="https://dolabellabucket.s3.sa-east-1.amazonaws.com/NewWeather02.png" width="23%" style="margin-right: 1%" />
+  <img src="https://dolabellabucket.s3.sa-east-1.amazonaws.com/NewWeather03.png" width="23%" style="margin-right: 1%"/>
 </div>
 
 <br />
@@ -33,28 +32,46 @@ This is a weather app where you can find your city and see the temperature.
 
 - [Typescript](http://typescriptlang.org/)
 
-- [React Native v0.64](https://reactnative.dev/)
-- [React Navigation](https://reactnavigation.org/docs/5.x/getting-started)
-  - React Native Screens
-  - React Native Gesture Handler
-  - React Native Reanimated
-  - React Native Masked View
-- [React Native SVG](https://github.com/react-native-svg/react-native-svg)
-- [React Native Async Storage](https://github.com/react-native-async-storage/async-storage)
-- [Redux](https://redux.js.org/)
-- [Redux Thunk](https://github.com/reduxjs/redux-thunk)
-- [React Redux](https://react-redux.js.org/)
+- [React Native v0.75.2](https://reactnative.dev/)
+- [Repack v4.3.2](https://github.com/callstack/repack)
+- [React Navigation v6](https://reactnavigation.org/docs/6.x/getting-started)
+- [React Query v5](https://tanstack.com/query/latest/docs/framework/react/overview)
+- [Zustang](https://github.com/pmndrs/zustand)
 - [i18n-js](https://github.com/fnando/i18n-js)
 
-<br/>
+## Dev Foundation
+
+- [webpack](https://webpack.js.org/)
+- [eslint](https://eslint.org/)
+
+## Cool features explored in this project
+
+Optimized Performance with Repack: Experience faster load times and enhanced performance with lazy loading of screens using Repack, significantly reducing the initial load size.
+
+Modular and Independent Features: Each feature is developed independently, allowing seamless lazy loading and easier maintenance. This modular approach ensures flexibility and scalability for future enhancements.
+
+Self-Contained Navigation: Each feature manages its own navigation, streamlining the development process and ensuring a smooth user experience.
+
+Effortless Styling with Core Components: Built-in styles in core components let you add and customize styles effortlessly, without the need to create separate style objects.
+```bash
+<Box mh="large" />
+```
+
+Simplified Theming with useStyle Hook: Enhance development efficiency with centralized theme management and the useStyle hook, making it simple to apply consistent design elements across the app.
+
+Type-Safe i18n: Benefit from robust translation support with type validation, minimizing errors from misplaced strings and improving the auto-completion experience for developers.
+
+Maintain Code Quality with Custom ESLint Rules: Ensure a clean and maintainable codebase by implementing custom ESLint rules tailored to your project's needs. These rules help enforce best practices, streamline code reviews, and prevent common errors, leading to a more consistent and readable code structure.
+
+Enhanced Readability with Workspace Separation: Organize your codebase with clear workspace separation, making packages more readable and accessible. This approach is especially beneficial for projects intended to be used as a monorepo, enabling better collaboration, streamlined development, and easier maintenance.
 
 ## Adicional Services
 
-You need to create a key to call the API service. This is free for a specific amount.
+You will need to create a key to call the API service. This is free for a specific amount.
 
 https://openweathermap.org/api
 
-After you need to include your api in src/utils/config
+After you need to include your api in src/config
 
 <br />
 ---

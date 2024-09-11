@@ -1,104 +1,85 @@
-import React from "react"
-import { ViewStyle } from "react-native"
-import { pixelSizeHorizontal, pixelSizeVertical } from "app/design/normalize"
+import React from 'react'
 
-export enum Space {
-  None = 0,
-  XXSmall = 2,
-  XSmall = 4,
-  Small = 8,
-  Medium = 16,
-  Large = 24,
-  XLarge = 32,
-  XXLarge = 48,
-  XXXLarge = 64,
+import { pixelSizeHorizontal, pixelSizeVertical } from './normalize'
+import { themeSpacing } from './theme'
+
+import type { ThemeSpacing } from './theme'
+import type { FlexStyle, ViewStyle } from 'react-native'
+
+export type WithSpaceProps<T> = {
+  m?: ThemeSpacing
+  mb?: ThemeSpacing
+  mh?: ThemeSpacing
+  ml?: ThemeSpacing
+  mr?: ThemeSpacing
+  mt?: ThemeSpacing
+  mv?: ThemeSpacing
+  p?: ThemeSpacing
+  pb?: ThemeSpacing
+  ph?: ThemeSpacing
+  pl?: ThemeSpacing
+  pr?: ThemeSpacing
+  pt?: ThemeSpacing
+  pv?: ThemeSpacing
+  forwardedRef?: React.ForwardedRef<T>
+  style?: ViewStyle
 }
 
-export type WithSpaceProps = {
-  m?: Space;
-  mb?: Space;
-  mh?: Space;
-  ml?: Space;
-  mr?: Space;
-  mt?: Space;
-  mv?: Space;
-  p?: Space;
-  pb?: Space;
-  ph?: Space;
-  pl?: Space;
-  pr?: Space;
-  pt?: Space;
-  pv?: Space;
-  forwardedRef?: any;
-  style?: any;
-}
-
-export const getValueByScale = (space?: Space) => {
-  return space ? space.valueOf() : undefined;
-}
-
-function definePadding(p?: Space, ph?: Space, pv?: Space) {
+function definePadding(p?: ThemeSpacing, ph?: ThemeSpacing, pv?: ThemeSpacing) {
   if (p) {
     return {
-      paddingHorizontal: pixelSizeHorizontal(getValueByScale(p)),
-      paddingVertical: pixelSizeVertical(getValueByScale(p)),
+      paddingHorizontal: pixelSizeHorizontal(themeSpacing[p]),
+      paddingVertical: pixelSizeVertical(themeSpacing[p]),
     }
   }
 
   let paddings = {}
-  
+
   if (ph) {
     paddings = {
       ...paddings,
-      paddingHorizontal: pixelSizeHorizontal(getValueByScale(ph)),
+      paddingHorizontal: pixelSizeHorizontal(themeSpacing[ph]),
     }
   }
-  
+
   if (pv) {
     paddings = {
       ...paddings,
-      paddingVertical: pixelSizeVertical(getValueByScale(pv)),
+      paddingVertical: pixelSizeVertical(themeSpacing[pv]),
     }
   }
 
   return paddings
 }
 
-function defineMargin(m?: Space, mh?: Space, mv?: Space) {
+function defineMargin(m?: ThemeSpacing, mh?: ThemeSpacing, mv?: ThemeSpacing) {
   if (m) {
     return {
-      marginHorizontal: pixelSizeHorizontal(getValueByScale(m)),
-      marginVertical: pixelSizeVertical(getValueByScale(m)),
+      marginHorizontal: pixelSizeHorizontal(themeSpacing[m]),
+      marginVertical: pixelSizeVertical(themeSpacing[m]),
     }
   }
 
   let margins = {}
-  
+
   if (mh) {
     margins = {
       ...margins,
-      marginHorizontal: pixelSizeHorizontal(getValueByScale(mh)),
+      marginHorizontal: pixelSizeHorizontal(themeSpacing[mh]),
     }
   }
-  
+
   if (mv) {
     margins = {
       ...margins,
-      marginVertical: pixelSizeVertical(getValueByScale(mv)),
+      marginVertical: pixelSizeVertical(themeSpacing[mv]),
     }
   }
 
   return margins
 }
 
-function setGuideStyle({
-  p,
-  pb,
-  ph,
-  pl,
-  pr,
-  pt,
-  pv,
+function setGuideStyle<T>({
   m,
   mb,
   mh,
@@ -106,67 +87,84 @@ function setGuideStyle({
   mr,
   mt,
   mv,
-}: WithSpaceProps): ViewStyle {
-  const injectedProps: ViewStyle = {
+  p,
+  pb,
+  ph,
+  pl,
+  pr,
+  pt,
+  pv,
+}: WithSpaceProps<T>): FlexStyle {
+  const injectedProps: FlexStyle = {
     ...definePadding(p, ph, pv),
-    paddingTop: pixelSizeVertical(getValueByScale(pt)),
-    paddingRight: pixelSizeHorizontal(getValueByScale(pr)),
-    paddingBottom: pixelSizeVertical(getValueByScale(pb)),
-    paddingLeft: pixelSizeHorizontal(getValueByScale(pl)),
+    paddingBottom: pixelSizeVertical(pb ? themeSpacing[pb] : 0),
+    paddingLeft: pixelSizeHorizontal(pl ? themeSpacing[pl] : 0),
+    paddingRight: pixelSizeHorizontal(pr ? themeSpacing[pr] : 0),
+    paddingTop: pixelSizeVertical(pt ? themeSpacing[pt] : 0),
     ...defineMargin(m, mh, mv),
-    marginTop: pixelSizeVertical(getValueByScale(mt)),
-    marginRight: pixelSizeHorizontal(getValueByScale(mr)),
-    marginBottom: pixelSizeVertical(getValueByScale(mb)),
-    marginLeft: pixelSizeHorizontal(getValueByScale(ml)),
+    marginBottom: pixelSizeVertical(mb ? themeSpacing[mb] : 0),
+    marginLeft: pixelSizeHorizontal(ml ? themeSpacing[ml] : 0),
+    marginRight: pixelSizeHorizontal(mr ? themeSpacing[mr] : 0),
+    marginTop: pixelSizeVertical(mt ? themeSpacing[mt] : 0),
   }
 
-  const cleanInjectedProps = Object.keys(injectedProps).reduce((acc, key) => {
-    const _acc = acc;
-    if (injectedProps[key] !== undefined) _acc[key] = injectedProps[key];
-    return _acc;
-  }, {})
+  const cleanInjectedProps = (
+    Object.keys(injectedProps) as Array<keyof FlexStyle>
+  ).reduce<Record<string, (typeof injectedProps)[keyof FlexStyle]>>(
+    (acc, key) => {
+      const value = injectedProps[key]
+
+      if (value !== undefined) {
+        acc[key] = injectedProps[key]
+      }
+
+      return acc
+    },
+    {},
+  )
 
   return cleanInjectedProps
 }
 
-function withSpaceProps<P, T>(
-  WrappedComponent: React.ComponentType<P>
-) {
-  const displayName = WrappedComponent.displayName ?? WrappedComponent.name ?? "Component"
+function withSpaceProps<P, T>(WrappedComponent: React.ComponentType<P>) {
+  const displayName =
+    WrappedComponent.displayName ?? WrappedComponent.name ?? 'Component'
 
   const ComponentWithModifiers = ({
+    forwardedRef,
     m,
-    mt,
-    mr,
     mb,
-    ml,
     mh,
+    ml,
+    mr,
+    mt,
     mv,
     p,
-    pt,
-    pr,
     pb,
-    pl,
     ph,
+    pl,
+    pr,
+    pt,
     pv,
-    forwardedRef,
     style,
     ...restProps
-    }: WithSpaceProps) => {
-      const props = { p, pt, pr, pb, pl, ph, pv, m, mt, mr, mb, ml, mh, mv }
-    
+  }: WithSpaceProps<T>) => {
+    const props = { m, mb, mh, ml, mr, mt, mv, p, pb, ph, pl, pr, pt, pv }
+
     const sx = {
       ...style,
-      ...setGuideStyle(props),
+      ...setGuideStyle<T>(props),
     }
 
-    return <WrappedComponent ref={forwardedRef} {...restProps as P} style={sx} />
+    return (
+      <WrappedComponent ref={forwardedRef} {...(restProps as P)} style={sx} />
+    )
   }
 
   ComponentWithModifiers.displayName = `withSpaceProps(${displayName})`
 
-  return React.forwardRef<T, P & WithSpaceProps>((props, ref) => {
-    return <ComponentWithModifiers {...props} forwardedRef={ref} />;
+  return React.forwardRef<T, P & WithSpaceProps<T>>((props, ref) => {
+    return <ComponentWithModifiers {...props} forwardedRef={ref} />
   })
 }
 
@@ -185,7 +183,6 @@ withSpaceProps.defaultProps = {
   pr: undefined,
   pt: undefined,
   pv: undefined,
-  forwardedRef: undefined,
   style: {},
 }
 

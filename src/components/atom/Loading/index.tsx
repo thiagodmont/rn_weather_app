@@ -1,16 +1,18 @@
 import React from 'react'
 import { ActivityIndicator } from 'react-native'
-import { Colors } from 'app/design'
+
+import { themeColors } from '@cool-core/design/theme'
+
+import type { ThemeColors } from '@cool-core/design/theme'
 
 interface Props {
-  size?: "small" | "large",
-  color?: Colors
+  size?: 'small' | 'large'
+  color?: ThemeColors
 }
 
-const Loading: React.FC<Props> = ({ size = "small", color = Colors.Secondary }) => {
-  return (
-    <ActivityIndicator size={size} color={color} />
-  )
+export const Loading: React.FC<Props> = ({
+  color = 'secondary',
+  size = 'small',
+}) => {
+  return <ActivityIndicator color={themeColors[color]} size={size} />
 }
-
-export default Loading

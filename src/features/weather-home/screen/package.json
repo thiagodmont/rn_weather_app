@@ -1,0 +1,9 @@
+{
+  "name": "@cool-weather-home/screens",
+  "version": "0.0.0",
+  "private": true,
+  "dependencies": {
+    "@cool-core/components-atom": "0.0.0",
+    "@cool-core/locale": "0.0.0"
+  }
+}

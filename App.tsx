@@ -1,22 +1,26 @@
+import 'react-native-reanimated'
+
 import 'react-native-gesture-handler'
 
 import React, { useEffect } from 'react'
-import { Provider } from 'react-redux'
-import store from 'app/store'
-import Routing from 'app/screens/Routing'
-import * as i18n from 'app/locale'
 
-const App: React.FC<any> = () => {
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
+import * as i18n from '@cool-core/locale'
+import { Routing } from '@cool-core/router'
+
+const queryClient = new QueryClient()
+
+const App = () => {
   useEffect(() => {
-    i18n.setI18nConfig()
+    i18n.setI18nConfig(i18n.DEFAULT_LANGUAGE)
   }, [])
 
   return (
-    <Provider store={store}>
+    <QueryClientProvider client={queryClient}>
       <Routing />
-    </Provider>
-  );
-};
+    </QueryClientProvider>
+  )
+}
 
 export default App

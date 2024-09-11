@@ -1,137 +1,186 @@
-import React, { MutableRefObject } from "react"
-import { ViewStyle } from "react-native"
-import { Colors } from "app/design"
-import { heightPixel, widthPixel } from "app/design/normalize"
+import React from 'react'
 
-interface WithModifiersProps {
-  width?: number;
-  height?: number;
-  flex?: number | boolean | undefined;
-  flexGrow?: number | boolean;
-  row?: boolean;
-  center?: boolean;
-  centerH?: boolean;
-  centerV?: boolean;
-  right?: boolean;
-  background?: Colors;
-  transform?: number;
-  forwardedRef?: MutableRefObject<any>;
-  style?: any;
+import { useTheme } from '@react-navigation/native'
+
+import { heightPixel, widthPixel } from './normalize'
+import { themeSpacing } from './theme'
+
+import type { Theme, ThemeColors, ThemeSpacing } from './theme'
+import type { ViewStyle } from 'react-native'
+
+interface WithModifiersProps<T> {
+  background?: ThemeColors
+  width?: ViewStyle['width']
+  height?: ViewStyle['height']
+  flex?: ViewStyle['flex'] | boolean
+  flexGrow?: ViewStyle['flexGrow'] | boolean
+  row?: boolean
+  gap?: ThemeSpacing
+  center?: boolean
+  centerH?: boolean
+  centerV?: boolean
+  right?: boolean
+  transform?: number
+  forwardedRef?: React.ForwardedRef<T>
+  style?: ViewStyle
 }
 
-function centerView(right?: boolean, center?: boolean, centerH?: boolean, centerV?: boolean, row?: boolean) {
+function centerView(
+  right?: boolean,
+  center?: boolean,
+  centerH?: boolean,
+  centerV?: boolean,
+  row?: boolean,
+) {
   let props = {}
 
   if (center) {
-    return { justifyContent: "center", alignItems: "center" }
+    return { alignItems: 'center', justifyContent: 'center' }
   }
 
   if (centerV === true && !row) {
-    props = {...props, justifyContent: "center"}
+    props = { ...props, justifyContent: 'center' }
   } else if (centerV === true && row === true) {
-    props = {...props, alignItems: "center"}
+    props = { ...props, alignItems: 'center' }
   }
 
   if (centerH === true && !row) {
-    props = {...props, alignItems: "center"}
+    props = { ...props, alignItems: 'center' }
   } else if (centerH === true && row === true) {
-    props = {...props, justifyContent: "center"}
+    props = { ...props, justifyContent: 'center' }
   }
 
   if (right === true && !row) {
-    props = {...props, alignItems: "flex-end"}
-  } else if (right === true && row === true) { 
-    props = {...props, justifyContent: "flex-end"}
+    props = { ...props, alignItems: 'flex-end' }
+  } else if (right === true && row === true) {
+    props = { ...props, justifyContent: 'flex-end' }
   }
 
   return props
 }
 
-function setGuideStyle ({
-  width,
-  height,
+type SetGuideStyle<T> = Omit<WithModifiersProps<T>, 'background'> & {
+  background?: string
+}
+
+function setGuideStyle<T>({
   background,
-  flex,
-  flexGrow,
-  row,
   center,
   centerH,
   centerV,
+  flex,
+  flexGrow,
+  gap,
+  height,
   right,
-  transform
-}: WithModifiersProps): ViewStyle {
+  row,
+  transform,
+  width,
+}: SetGuideStyle<T>): ViewStyle {
   const injectedProps: ViewStyle = {
-    width: typeof(width) === "number" ? widthPixel(width) : width,
-    height: typeof(height) === "number" ? heightPixel(height) : height,
     backgroundColor: background,
-    flex: typeof(flex) === "boolean" ? 1 : typeof(flex) === "number" ? flex : undefined,
-    flexDirection: row ? "row" : undefined,
-    flexGrow: typeof(flexGrow) === "boolean" ? 1 : flexGrow,
+    flex:
+      typeof flex === 'boolean'
+        ? 1
+        : typeof flex === 'number'
+        ? flex
+        : undefined,
+    flexDirection: row ? 'row' : undefined,
+    flexGrow: typeof flexGrow === 'boolean' ? 1 : flexGrow,
+    gap: gap ? themeSpacing[gap] : undefined,
+    height: typeof height === 'number' ? heightPixel(height) : height,
     transform: transform ? [{ rotate: `${transform}deg` }] : undefined,
-    ...centerView(right, center, centerH, centerV, row)
+    width: typeof width === 'number' ? widthPixel(width) : width,
+    ...centerView(right, center, centerH, centerV, row),
   }
 
-  const cleanInjectedProps = Object.keys(injectedProps).reduce((acc, key) => {
-    const _acc = acc;
-    if (injectedProps[key] !== undefined) _acc[key] = injectedProps[key];
-    return _acc;
-  }, {})
+  const cleanInjectedProps = (
+    Object.keys(injectedProps) as Array<keyof ViewStyle>
+  ).reduce<Record<string, (typeof injectedProps)[keyof ViewStyle]>>(
+    (acc, key) => {
+      const value = injectedProps[key]
+
+      if (value !== undefined) {
+        acc[key] = injectedProps[key]
+      }
+
+      return acc
+    },
+    {},
+  )
 
   return cleanInjectedProps
 }
 
-function withModifiersProps<P, T>(
-  WrappedComponent: React.ComponentType<P>
-) {
-  const displayName = WrappedComponent.displayName ?? WrappedComponent.name ?? "Component"
+function withModifiersProps<P, T>(WrappedComponent: React.ComponentType<P>) {
+  const displayName =
+    WrappedComponent.displayName ?? WrappedComponent.name ?? 'Component'
 
   const ComponentWithModifiers = ({
-    width,
-    height,
-    flex,
-    flexGrow,
-    row,
+    background,
     center,
     centerH,
     centerV,
-    right,
-    background,
-    transform,
+    flex,
+    flexGrow,
     forwardedRef,
+    gap,
+    height,
+    right,
+    row,
     style,
+    transform,
+    width,
     ...restProps
-    }: WithModifiersProps) => {
-    const props = { width, height, flex, flexGrow, row, center, centerH, centerV, right, background, transform }
-    
-    const sx = {
-      ...style,
-      ...setGuideStyle(props),
+  }: WithModifiersProps<T>) => {
+    const theme = useTheme() as Theme
+
+    const props = {
+      background: background ? theme.colors[background] : undefined,
+      center,
+      centerH,
+      centerV,
+      flex,
+      flexGrow,
+      gap,
+      height,
+      right,
+      row,
+      transform,
+      width,
     }
 
-    return <WrappedComponent ref={forwardedRef} {...restProps as P} style={sx} />
+    const sx = {
+      ...style,
+      ...setGuideStyle<T>(props),
+    }
+
+    return (
+      <WrappedComponent ref={forwardedRef} {...(restProps as P)} style={sx} />
+    )
   }
 
   ComponentWithModifiers.displayName = `withModifiersProps(${displayName})`
 
-  return React.forwardRef<T, P & WithModifiersProps>((props, ref) => {
-    return <ComponentWithModifiers {...props} forwardedRef={ref} />;
+  return React.forwardRef<T, P & WithModifiersProps<T>>((props, ref) => {
+    return <ComponentWithModifiers {...props} forwardedRef={ref} />
   })
 }
 
 withModifiersProps.defaultProps = {
-  width: undefined,
-  height: undefined,
   background: undefined,
-  flex: undefined,
-  flexGrow: undefined,
-  row: undefined,
   center: undefined,
   centerH: undefined,
   centerV: undefined,
+  flex: undefined,
+  flexGrow: undefined,
+  gap: undefined,
+  height: undefined,
   right: undefined,
-  transform: undefined,
-  forwardedRef: undefined,
+  row: undefined,
   style: {},
+  transform: undefined,
+  width: undefined,
 }
 
 export default withModifiersProps

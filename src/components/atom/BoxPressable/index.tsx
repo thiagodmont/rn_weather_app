@@ -1,52 +1,85 @@
 import React, { useRef } from 'react'
-import { Animated, GestureResponderEvent, Pressable, View, ViewStyle } from 'react-native'
-import ComponentStyle from 'app/components/atom/Box/styles'
-import withModifiersProps from 'app/design/withModifiersProps'
-import withSpaceProps from 'app/design/withSpaceProps'
-import withBorderProps from 'app/design/withBorderProps'
-import withPositionProps from 'app/design/withPositionProps'
+import { Animated, Pressable } from 'react-native'
+
+import {
+  withBorderProps,
+  withModifiersProps,
+  withPositionProps,
+  withSpaceProps,
+} from '@cool-core/design'
+import { useStyles } from '@cool-core/design/useStyles'
+
+import type { PropsWithChildren } from 'react'
+import type { GestureResponderEvent, ViewStyle } from 'react-native'
 
 type Props = {
-  children?: any;
-  style?: ViewStyle;
-  onPress?: ((event: GestureResponderEvent) => void) | null | undefined;
-  onPressIn?: ((event: GestureResponderEvent) => void) | null | undefined;
-  onPressOut?: ((event: GestureResponderEvent) => void) | null | undefined;
+  style?: ViewStyle
+  onPress?: ((event: GestureResponderEvent) => void) | null | undefined
+  disabled?: boolean
+  stretch?: boolean
 }
 
-const BoxPressable = ({ children, onPress, onPressIn, onPressOut, style }: Props) => {
-  const fadeAnim = useRef(new Animated.Value(1)).current;
-  
+const BoxPressable = ({
+  children,
+  disabled,
+  onPress,
+  stretch,
+  style,
+}: PropsWithChildren<Props>) => {
+  const fadeAnim = useRef(new Animated.Value(1)).current
+
   const fadeOut = () => {
-    Animated.timing(fadeAnim, { toValue: 0.5, duration: 120, useNativeDriver: true }).start()
+    Animated.timing(fadeAnim, {
+      duration: 120,
+      toValue: 0.5,
+      useNativeDriver: true,
+    }).start()
   }
 
   const fadeIn = () => {
-    Animated.timing(fadeAnim, { toValue: 1, duration: 120, useNativeDriver: true }).start()
+    Animated.timing(fadeAnim, {
+      duration: 120,
+      toValue: 1,
+      useNativeDriver: true,
+    }).start()
   }
 
-  const onPressInInternal = (event: GestureResponderEvent) => {
-    onPress && fadeOut()
-    onPressIn?.(event) && fadeOut()
+  const onPressInInternal = (_: GestureResponderEvent) => {
+    if (!onPress) return
+    fadeOut()
   }
 
-  const onPressOutInternal = (event: GestureResponderEvent) => {
-    onPress && fadeIn()
-    onPressOut?.(event) && fadeIn()
+  const onPressOutInternal = (_: GestureResponderEvent) => {
+    if (!onPress) return
+    fadeIn()
   }
 
-  return (<ComponentStyle style={style}>
-    {(styles) => (
-      <Pressable 
-        onPressIn={onPressInInternal}
-        onPressOut={onPressOutInternal}
-        onPress={onPress}>
-          <Animated.View style={{ opacity: fadeAnim, ...styles.container }}>
-            {children}
-          </Animated.View>
-      </Pressable>
-    )}
-  </ComponentStyle>)
+  const styles = useStyles(
+    () => ({
+      container: {
+        ...style,
+        opacity: fadeAnim,
+      },
+      pressable: {
+        alignSelf: stretch ? 'stretch' : undefined,
+      },
+    }),
+    [fadeAnim, stretch],
+  )
+
+  return (
+    <Pressable
+      disabled={disabled}
+      onPress={onPress}
+      onPressIn={onPressInInternal}
+      onPressOut={onPressOutInternal}
+      style={styles.pressable}
+    >
+      <Animated.View style={styles.container}>{children}</Animated.View>
+    </Pressable>
+  )
 }
 
-export default withPositionProps(withSpaceProps(withModifiersProps(withBorderProps(BoxPressable))))
+export default withPositionProps(
+  withSpaceProps(withModifiersProps(withBorderProps(BoxPressable))),
+)

@@ -1,20 +1,24 @@
 import React from 'react'
-import { SafeAreaView, ViewStyle } from 'react-native'
-import withModifiersProps from 'app/design/withModifiersProps'
-import withSpaceProps from 'app/design/withSpaceProps'
-import ComponentStyle from 'app/components/atom/Box/styles'
+import { SafeAreaView } from 'react-native'
+
+import { withModifiersProps, withSpaceProps } from '@cool-core/design'
+import { useStyles } from '@cool-core/design/useStyles'
+
+import type { PropsWithChildren } from 'react'
+import type { ViewStyle } from 'react-native'
 
 type Props = {
-  children: any;
-  style?: ViewStyle;
+  style?: ViewStyle
 }
 
-const BoxSafe = ({ children, style }: Props) => (
-  <ComponentStyle style={style}>
-    {(styles) => (
-      <SafeAreaView style={styles.container}>{children}</SafeAreaView>
-    )}
-  </ComponentStyle>
-)
+const BoxSafe = ({ children, style }: PropsWithChildren<Props>) => {
+  const styles = useStyles(() => ({
+    container: {
+      ...style,
+    },
+  }))
+
+  return <SafeAreaView style={styles.container}>{children}</SafeAreaView>
+}
 
 export default withSpaceProps(withModifiersProps(BoxSafe))

@@ -1,50 +1,66 @@
 import React, { useImperativeHandle, useRef } from 'react'
-import { ViewStyle } from 'react-native'
+
 import { ScrollView } from 'react-native-gesture-handler'
-import ComponentStyle from 'app/components/atom/Box/styles'
-import withModifiersProps from 'app/design/withModifiersProps'
-import withSpaceProps from 'app/design/withSpaceProps'
-import withBorderProps from 'app/design/withBorderProps'
+
+import {
+  withBorderProps,
+  withModifiersProps,
+  withSpaceProps,
+} from '@cool-core/design'
+import { useStyles } from '@cool-core/design/useStyles'
+
+import type { ViewStyle } from 'react-native'
 
 interface ParamsScrollToEnd {
   animated: boolean
 }
 
 export interface BoxScrollRefProps {
-  scrollToEnd: (params?: ParamsScrollToEnd) => void;
+  scrollToEnd: (params?: ParamsScrollToEnd) => void
 }
 
 export const useBoxScroll = () => {
   const scroll = useRef<BoxScrollRefProps>(null)
 
-  const scrollToEnd = (params?: ParamsScrollToEnd) => scroll.current?.scrollToEnd(params)
+  const scrollToEnd = (params?: ParamsScrollToEnd) =>
+    scroll.current?.scrollToEnd(params)
 
   return { ref: scroll, scrollToEnd }
 }
 
 type Props = {
-  children?: any;
-  style?: ViewStyle;
+  children?: React.ReactNode
+  style?: ViewStyle
 }
 
-const BoxScroll = React.forwardRef<BoxScrollRefProps, Props>(({ children, style }, ref) => {
-  const scrollRef = useRef<ScrollView>(null)
+const BoxScroll = React.forwardRef<BoxScrollRefProps, Props>(
+  ({ children, style }, ref) => {
+    const styles = useStyles(() => ({
+      container: {
+        ...style,
+      },
+    }))
 
-  const scrollToEnd = (params?: ParamsScrollToEnd) => {
-    scrollRef?.current?.scrollToEnd(params)
-  }
+    const scrollRef = useRef<ScrollView>(null)
 
-  useImperativeHandle(ref, () => ({
-    scrollToEnd,
-  }))
-  
-  return (
-    <ComponentStyle style={style}>
-      {(styles) => (
-        <ScrollView ref={scrollRef} showsVerticalScrollIndicator={false} style={styles.container}>{children}</ScrollView>
-      )}
-    </ComponentStyle>
-  )
-})
+    const scrollToEnd = (params?: ParamsScrollToEnd) => {
+      scrollRef?.current?.scrollToEnd(params)
+    }
+
+    useImperativeHandle(ref, () => ({
+      scrollToEnd,
+    }))
+
+    return (
+      <ScrollView
+        ref={scrollRef}
+        showsVerticalScrollIndicator={false}
+        style={styles.container}
+      >
+        {children}
+      </ScrollView>
+    )
+  },
+)
 
 export default withSpaceProps(withModifiersProps(withBorderProps(BoxScroll)))

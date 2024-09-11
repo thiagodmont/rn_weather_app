@@ -1,0 +1,9 @@
+{
+  "name": "@cool-onboarding/screen",
+  "version": "0.0.0",
+  "private": true,
+  "dependencies": {
+    "@cool-core/design": "0.0.0",
+    "@cool-core/locale": "0.0.0"
+  }
+}

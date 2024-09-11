@@ -1,138 +1,179 @@
 import React from 'react'
-import { ViewStyle } from 'react-native'
-import { Colors } from 'app/design'
 
-export interface WithBorderProps {
-  border?: number | boolean;
-  borderColor?: Colors;
-  borderL?: number | boolean;
-  borderR?: number | boolean;
-  borderT?: number | boolean;
-  borderB?: number | boolean;
-  radius?: number;
-  radiusTL?: number;
-  radiusTR?: number;
-  radiusBL?: number;
-  radiusBR?: number;
-  dashed?: boolean;
-  shadow?: boolean;
-  forwardedRef?: any;
-  style?: any;
+import { useTheme } from '@react-navigation/native'
+
+import { themeColors } from './theme'
+
+import type { Theme, ThemeColors } from './theme'
+import type { ViewStyle } from 'react-native'
+
+export interface WithBorderProps<T> {
+  debug?: boolean
+  border?: ViewStyle['borderWidth'] | boolean
+  borderColor?: ThemeColors
+  borderL?: ViewStyle['borderLeftWidth'] | boolean
+  borderR?: ViewStyle['borderRightWidth'] | boolean
+  borderT?: ViewStyle['borderTopWidth'] | boolean
+  borderB?: ViewStyle['borderBottomWidth'] | boolean
+  radius?: ViewStyle['borderRadius']
+  radiusTL?: ViewStyle['borderTopLeftRadius']
+  radiusTR?: ViewStyle['borderTopRightRadius']
+  radiusBL?: ViewStyle['borderBottomLeftRadius']
+  radiusBR?: ViewStyle['borderBottomRightRadius']
+  dashed?: boolean
+  shadow?: boolean
+  forwardedRef?: React.ForwardedRef<T>
+  style?: ViewStyle
 }
 
 export function getShadowProperties(shadow?: boolean) {
   if (shadow) {
     return {
-      shadowColor: "#000",
+      elevation: 5,
+      shadowColor: themeColors.black,
       shadowOffset: {
-        width: 0,
         height: 2,
+        width: 0,
       },
       shadowOpacity: 0.25,
       shadowRadius: 3.84,
-      elevation: 5,
     }
   }
 
   return {}
 }
 
-function setGuideStyle({
+type SetGuideStyle<T> = Omit<WithBorderProps<T>, 'borderColor'> & {
+  borderColor?: string
+}
+
+function setGuideStyle<T>({
   border,
+  borderB,
   borderColor,
   borderL,
   borderR,
   borderT,
-  borderB,
+  dashed,
+  debug = false,
   radius,
-  radiusTL,
-  radiusTR,
   radiusBL,
   radiusBR,
-  dashed,
+  radiusTL,
+  radiusTR,
   shadow,
-}: WithBorderProps): ViewStyle {
+}: SetGuideStyle<T>): ViewStyle {
   const injectedProps: ViewStyle = {
-    borderColor,
-    borderWidth: typeof(border) === "boolean" ? 1 : border,
-    borderLeftWidth: typeof(borderL) === "boolean" ? 1 : borderL,
-    borderRightWidth: typeof(borderR) === "boolean" ? 1 : borderR,
-    borderTopWidth: typeof(borderT) === "boolean" ? 1 : borderT,
-    borderBottomWidth: typeof(borderB) === "boolean" ? 1 : borderB,
-    borderRadius: radius ? radius : dashed ? 1 : undefined,
-    borderTopLeftRadius: radiusTL,
-    borderTopRightRadius: radiusTR,
     borderBottomLeftRadius: radiusBL,
     borderBottomRightRadius: radiusBR,
+    borderBottomWidth: typeof borderB === 'boolean' ? 1 : borderB,
+    borderColor: debug ? themeColors.danger : borderColor,
+    borderLeftWidth: typeof borderL === 'boolean' ? 1 : borderL,
+    borderRadius: radius || (dashed ? 1 : undefined),
+    borderRightWidth: typeof borderR === 'boolean' ? 1 : borderR,
     borderStyle: dashed ? 'dashed' : undefined,
+    borderTopLeftRadius: radiusTL,
+    borderTopRightRadius: radiusTR,
+    borderTopWidth: typeof borderT === 'boolean' ? 1 : borderT,
+    borderWidth: typeof border === 'boolean' || debug ? 1 : border,
     ...getShadowProperties(shadow),
   }
 
-  const cleanInjectedProps = Object.keys(injectedProps).reduce((acc, key) => {
-    const _acc = acc;
-    if (injectedProps[key] !== undefined) _acc[key] = injectedProps[key];
-    return _acc;
-  }, {})
+  const cleanInjectedProps = (
+    Object.keys(injectedProps) as Array<keyof ViewStyle>
+  ).reduce<Record<string, (typeof injectedProps)[keyof ViewStyle]>>(
+    (acc, key) => {
+      const value = injectedProps[key]
+
+      if (value !== undefined) {
+        acc[key] = injectedProps[key]
+      }
+
+      return acc
+    },
+    {},
+  )
 
   return cleanInjectedProps
 }
 
 function withBorderProps<P, T>(
-  WrappedComponent: React.ComponentType<P>
-): React.ForwardRefExoticComponent<React.PropsWithoutRef<P & WithBorderProps> & React.RefAttributes<T>> {
-  
-  const displayName = WrappedComponent.displayName || WrappedComponent.name || "Component"
+  WrappedComponent: React.ComponentType<P>,
+): React.ForwardRefExoticComponent<
+  React.PropsWithoutRef<P & WithBorderProps<T>> & React.RefAttributes<T>
+> {
+  const displayName =
+    WrappedComponent.displayName || WrappedComponent.name || 'Component'
 
   const ComponentWithBorders = ({
     border,
+    borderB,
     borderColor,
     borderL,
     borderR,
     borderT,
-    borderB,
+    dashed,
+    debug,
+    forwardedRef,
     radius,
-    radiusTL,
-    radiusTR,
     radiusBL,
     radiusBR,
-    dashed,
+    radiusTL,
+    radiusTR,
     shadow,
     style,
-    forwardedRef,
     ...restProps
-  }: WithBorderProps) => {
-    const props = { border, borderColor, borderL, borderR, borderT, borderB, radius, radiusTL, radiusTR, radiusBL, radiusBR, dashed, shadow }
-    
-    const sx = {
-      ...style,
-      ...setGuideStyle(props),
+  }: WithBorderProps<T>) => {
+    const theme = useTheme() as Theme
+
+    const props = {
+      border,
+      borderB,
+      borderColor: borderColor ? theme.colors[borderColor] : undefined,
+      borderL,
+      borderR,
+      borderT,
+      dashed,
+      debug,
+      radius,
+      radiusBL,
+      radiusBR,
+      radiusTL,
+      radiusTR,
+      shadow,
     }
 
-    return <WrappedComponent ref={forwardedRef} {...restProps as P} style={sx} />
+    const sx = {
+      ...style,
+      ...setGuideStyle<T>(props),
+    }
+
+    return (
+      <WrappedComponent ref={forwardedRef} {...(restProps as P)} style={sx} />
+    )
   }
 
-  ComponentWithBorders.displayName = `withBorderProps(${displayName})`;
+  ComponentWithBorders.displayName = `withBorderProps(${displayName})`
 
-  return React.forwardRef<T, P & WithBorderProps>((props, ref) => {
-    return <ComponentWithBorders {...props} forwardedRef={ref} />;
+  return React.forwardRef<T, P & WithBorderProps<T>>((props, ref) => {
+    return <ComponentWithBorders {...props} forwardedRef={ref} />
   })
 }
 
 withBorderProps.defaultProps = {
   border: undefined,
+  borderB: undefined,
   borderColor: undefined,
   borderL: undefined,
   borderR: undefined,
   borderT: undefined,
-  borderB: undefined,
+  dashed: undefined,
   radius: undefined,
-  radiusTL: undefined,
-  radiusTR: undefined,
   radiusBL: undefined,
   radiusBR: undefined,
-  dashed: undefined,
+  radiusTL: undefined,
+  radiusTR: undefined,
   shadow: undefined,
-  forwardedRef: undefined,
   style: {},
 }
 

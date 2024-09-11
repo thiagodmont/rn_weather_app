@@ -1,0 +1,11 @@
+{
+  "name": "@cool-core/router",
+  "version": "0.0.0",
+  "private": true,
+  "dependencies": {
+    "@cool-core/locale": "0.0.0",
+    "@cool-core/store": "0.0.0",
+    "@cool-weather-home/navigation": "0.0.0",
+    "@cool-weather-home/routes": "0.0.0"
+  }
+}

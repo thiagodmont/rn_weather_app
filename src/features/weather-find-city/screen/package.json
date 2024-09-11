@@ -1,0 +1,8 @@
+{
+  "name": "@cool-weather-find-city/screen",
+  "version": "0.0.0",
+  "private": true,
+  "dependencies": {
+    "@cool-core/services-query": "0.0.0"
+  }
+}

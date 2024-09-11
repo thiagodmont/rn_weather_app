@@ -1,24 +1,36 @@
 import React from 'react'
-import { LayoutChangeEvent, View, ViewStyle } from 'react-native'
-import withModifiersProps from 'app/design/withModifiersProps'
-import withSpaceProps from 'app/design/withSpaceProps'
-import ComponentStyle from 'app/components/atom/Box/styles'
-import withBorderProps from 'app/design/withBorderProps'
-import withPositionProps from 'app/design/withPositionProps'
+import { View } from 'react-native'
+
+import {
+  withBorderProps,
+  withModifiersProps,
+  withPositionProps,
+  withSpaceProps,
+} from '@cool-core/design'
+import { useStyles } from '@cool-core/design/useStyles'
+
+import type { PropsWithChildren } from 'react'
+import type { LayoutChangeEvent, ViewStyle } from 'react-native'
 
 type Props = {
-  children?: any;
-  tag?: string;
-  style?: ViewStyle;
-  onLayout?: (data: LayoutChangeEvent) => void;
+  style?: ViewStyle
+  onLayout?: (data: LayoutChangeEvent) => void
 }
 
-const Box = ({ children, style, onLayout }: Props) => (
-  <ComponentStyle style={style}>
-    {(styles) => (
-      <View style={styles.container} onLayout={onLayout}>{children}</View>
-    )}
-  </ComponentStyle>
-)
+const Box = ({ children, onLayout, style }: PropsWithChildren<Props>) => {
+  const styles = useStyles(() => ({
+    container: {
+      ...style,
+    },
+  }))
 
-export default withPositionProps(withBorderProps(withSpaceProps(withModifiersProps(Box))))
+  return (
+    <View onLayout={onLayout} style={styles.container}>
+      {children}
+    </View>
+  )
+}
+
+export default withPositionProps(
+  withBorderProps(withSpaceProps(withModifiersProps(Box))),
+)

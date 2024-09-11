@@ -1,67 +1,93 @@
-import React from "react"
-import { ViewStyle } from "react-native"
+import React from 'react'
 
-type WithPositionProps = {
-  position?: "relative" | "absolute";
-  pTop?: number;
-  pBottom?: number;
-  pLeft?: number;
-  pRight?: number;
-  style?: any;
+import type { FlexStyle, ViewStyle } from 'react-native'
+
+type WithPositionProps<T> = {
+  position?: FlexStyle['position']
+  pTop?: FlexStyle['top']
+  pBottom?: FlexStyle['top']
+  pLeft?: FlexStyle['left']
+  pRight?: FlexStyle['right']
+  forwardedRef?: React.ForwardedRef<T>
+  style?: ViewStyle
 }
 
-const setGuideStyle = ({
-  position,
-  pTop,
+function setGuideStyle<T>({
   pBottom,
   pLeft,
+  position,
   pRight,
-}: WithPositionProps): ViewStyle => {
-  const injectedProps: ViewStyle = {
-    position,
-    top: pTop,
+  pTop,
+}: WithPositionProps<T>): FlexStyle {
+  const injectedProps: FlexStyle = {
     bottom: pBottom,
     left: pLeft,
+    position,
     right: pRight,
+    top: pTop,
   }
 
-  const cleanInjectedProps = Object.keys(injectedProps).reduce((acc, key) => {
-    const _acc = acc;
-    if (injectedProps[key] !== undefined) _acc[key] = injectedProps[key];
-    return _acc;
-  }, {})
+  const cleanInjectedProps = (
+    Object.keys(injectedProps) as Array<keyof FlexStyle>
+  ).reduce<Record<string, (typeof injectedProps)[keyof FlexStyle]>>(
+    (acc, key) => {
+      const value = injectedProps[key]
+
+      if (value !== undefined) {
+        acc[key] = injectedProps[key]
+      }
+
+      return acc
+    },
+    {},
+  )
 
   return cleanInjectedProps
 }
 
-const withPositionProps = <P extends object>(
-  Component: React.ComponentType<P>
-): React.FC<P & WithPositionProps> => ({
-  position,
-  pTop,
-  pBottom,
-  pLeft,
-  pRight,
-  style,
-  ...restProps
-}: WithPositionProps) => {
+function withPositionProps<P, T>(
+  WrappedComponent: React.ComponentType<P>,
+): React.ForwardRefExoticComponent<
+  React.PropsWithoutRef<P & WithPositionProps<T>> & React.RefAttributes<T>
+> {
+  const displayName =
+    WrappedComponent.displayName || WrappedComponent.name || 'Component'
 
-  const props = { position, pTop, pBottom, pLeft, pRight }
+  const ComponentWithBorders = ({
+    forwardedRef,
+    pBottom,
+    pLeft,
+    position,
+    pRight,
+    pTop,
+    style,
+    ...restProps
+  }: WithPositionProps<T>) => {
+    const props = { pBottom, pLeft, position, pRight, pTop }
 
-  const sx = {
-    ...style,
-    ...setGuideStyle(props),
+    const sx = {
+      ...style,
+      ...setGuideStyle(props),
+    }
+
+    return (
+      <WrappedComponent ref={forwardedRef} {...(restProps as P)} style={sx} />
+    )
   }
 
-  return <Component {...restProps as P} style={sx} />
+  ComponentWithBorders.displayName = `withPositionProps(${displayName})`
+
+  return React.forwardRef<T, P & WithPositionProps<T>>((props, ref) => {
+    return <ComponentWithBorders {...props} forwardedRef={ref} />
+  })
 }
 
 withPositionProps.defaultProps = {
-  position: undefined,
-  pTop: undefined,
   pBottom: undefined,
   pLeft: undefined,
+  position: undefined,
   pRight: undefined,
+  pTop: undefined,
   style: {},
 }
 

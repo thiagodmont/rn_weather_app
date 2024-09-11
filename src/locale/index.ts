@@ -1,18 +1,28 @@
 import { I18nManager } from 'react-native'
+
 import i18n from 'i18n-js'
+
+import type { KeyTranslation } from './types'
+import type { TranslateOptions } from 'i18n-js'
 
 export const DEFAULT_LANGUAGE = 'en'
 
-export const translationGetters = {
-  en: () => require('./en/index.json'),
-  ptBr: () => require('./pt_BR/index.json'),
+export const translations = {
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
+  en: () => require('./en/index.js').en,
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
+  ptBr: () => require('./pt_BR/index.js').ptBr,
 }
 
-export const t = (key: string, config?: any | null) => i18n.t(key, config)
+export const t = (key: KeyTranslation, config?: TranslateOptions) =>
+  i18n.t(key, config)
 
-export const setI18nConfig = (language = DEFAULT_LANGUAGE) => {
+export type LanguageAvailable = keyof typeof translations
+
+export const setI18nConfig = (language: LanguageAvailable) => {
   I18nManager.forceRTL(false)
 
-  i18n.translations = { [language]: translationGetters[language]() }
+  i18n.translations = { [language]: translations[language]() }
   i18n.locale = language
+  i18n.defaultLocale = language
 }

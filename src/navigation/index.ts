@@ -1,47 +1,13 @@
-import { CommonActions, useNavigation } from "@react-navigation/native"
-import { NavHome, NavDetail, NavFindCity } from "app/screens/Routing"
-import { City } from 'app/utils/weather'
+import { useNavigation } from '@react-navigation/native'
 
-const useNav = () => {
+export const useCoreNavigation = () => {
   const nav = useNavigation()
 
-  /**
-   * Navigate from Onboarding to Home and reset the routes stack;
-   * Onboarding -> Home
-   */
-  function navFromOnboardingToHome() {
-    nav.dispatch(
-      CommonActions.reset({
-        routes:[
-          { name: NavHome },
-        ]
-      })
-    )
-  }
-
-  function navGoBack() {
+  function goBack() {
     nav.goBack()
   }
 
-  function navToHome() {
-    nav.navigate(NavHome)
-  }
-
-  function navToDetail(city: City) {
-    nav.navigate(NavDetail, { city })
-  }
-
-  function navToFindCity() {
-    nav.navigate(NavFindCity)
-  }
-
   return {
-    navFromOnboardingToHome,
-    navToHome,
-    navToDetail,
-    navToFindCity,
-    navGoBack
+    goBack,
   }
 }
-
-export default useNav

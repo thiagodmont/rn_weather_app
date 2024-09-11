@@ -1,0 +1,8 @@
+{
+  "name": "@cool-core/components-molecule",
+  "version": "0.0.0",
+  "private": true,
+  "dependencies": {
+    "@cool-core/design": "0.0.0"
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "name": "@cool-core/design",
+  "version": "0.0.0",
+  "private": true,
+  "dependencies": {
+    "micro-memoize": "4.1.2"
+  }
+}

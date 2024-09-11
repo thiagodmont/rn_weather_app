@@ -1,20 +1,20 @@
-import React, { useRef, useEffect, useState, useImperativeHandle } from 'react'
-import { 
-  Modal, 
-  PanResponder, 
-  Animated, 
-  Dimensions, 
-  KeyboardAvoidingView, 
-  Platform, 
+import React, { useEffect, useImperativeHandle, useRef, useState } from 'react'
+import {
+  Animated,
+  Dimensions,
+  KeyboardAvoidingView,
+  Modal,
+  PanResponder,
+  Platform,
   Pressable,
 } from 'react-native'
-import Box from 'app/components/atom/Box'
-import { Space } from 'app/design/withSpaceProps'
-import ComponentStyle from 'app/components/molecule/BottomSheet/styles'
+
+import { Box } from '@cool-core/components-atom'
+import { useStyles } from '@cool-core/design/useStyles'
 
 export interface BottomSheetRefProps {
-  show: () => void;
-  dismiss: () => void;
+  show: () => void
+  dismiss: () => void
 }
 
 export const useBottomSheet = () => {
@@ -23,107 +23,152 @@ export const useBottomSheet = () => {
   const show = () => modal.current?.show()
   const dismiss = () => modal.current?.dismiss()
 
-  return { ref: modal, show, dismiss }
+  return { dismiss, ref: modal, show }
 }
 
 interface Props {
-  children: React.ReactNode;
-  onClose?: () => void;
+  children: React.ReactNode
+  initialVisible?: boolean
+  onClose?: () => void
 }
 
-const BottomSheet = React.forwardRef<BottomSheetRefProps, Props>(({ children, onClose }, ref) => {
-  const [visible, setVisible] = useState(false)
-
-  const screenHeight = Dimensions.get('screen').height
-  const panY = useRef(new Animated.Value(screenHeight)).current
-  const animation = useRef(new Animated.Value(0))
-
-  const overlay = animation.current.interpolate({
-    inputRange: [0, 0.2],
-    outputRange: [0, 0.2],
-    extrapolate: "clamp"
-  })
-
-  const resetPositionAnim = Animated.timing(panY, {
-    toValue: 0,
-    duration: 300,
-    useNativeDriver: true
-  })
-
-  const closeAnim = Animated.timing(panY, {
-    toValue: screenHeight,
-    duration: 350,
-    useNativeDriver: true
-  })
-
-  const translateY = panY.interpolate({
-    inputRange: [-1, 0, 1],
-    outputRange: [0, 0, 1]
-  })
-
-  const show = () => setVisible(true)
-  const dismiss = () => handleDismiss()
-
-  useImperativeHandle(ref, () => ({
-    show,
-    dismiss
-  }));
-
-  const handleDismiss = () => {
-    Animated.timing(
-      animation.current, 
-      { toValue: 0, duration: 180, useNativeDriver: true }
-    ).start(() => {
-      closeAnim.start(onClose)
-      setVisible(false)
-    })
-  }
-
-  useEffect(() => {
-    resetPositionAnim.start()
-  }, [resetPositionAnim])
-
-  const panResponders = useRef(
-    PanResponder.create({
-      onStartShouldSetPanResponder: () => true,
-      onMoveShouldSetPanResponder: () => false,
-      onPanResponderMove: Animated.event([null, { dy: panY }], {
-        useNativeDriver: false,
-      }),
-      onPanResponderRelease: (_, gs) => {
-        if (gs.dy > 0 && gs.vy > 2) {
-          return handleDismiss()
-        }
-        return resetPositionAnim.start()
+const BottomSheet = React.forwardRef<BottomSheetRefProps, Props>(
+  ({ children, initialVisible = false, onClose }, ref) => {
+    const styles = useStyles((theme) => ({
+      container: {
+        flex: 1,
       },
-    }),
-  ).current
+      content: {
+        backgroundColor: 'white',
+        borderTopLeftRadius: theme.spacing.base,
+        borderTopRightRadius: theme.spacing.base,
+        paddingTop: theme.spacing.base,
+      },
+      overlay: {
+        backgroundColor: theme.colors.black,
+        height: Dimensions.get('window').height,
+        position: 'absolute',
+        width: Dimensions.get('window').width,
+      },
+      pin: {
+        backgroundColor: theme.colors.grey,
+        borderRadius: 6,
+        height: 6,
+        width: 50,
+      },
+      pressable: {
+        flex: 1,
+        justifyContent: 'flex-end',
+      },
+    }))
 
-  return (
-  <Modal
-    animated
-    animationType="slide"
-    visible={visible}
-    onShow={() => {
-      Animated.timing(animation.current, { toValue: 0.2, duration: 300, useNativeDriver: true }).start()
-    }}
-    transparent>
-      <ComponentStyle>
-        {(styles) => (
-          <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} style={styles.container}>
-            <Pressable style={styles.pressable} onPress={handleDismiss}>
-              <Animated.View style={[styles.overlay, { opacity: overlay }]} />
-              <Animated.View style={[styles.content, { transform: [{translateY: translateY}] }]} {...panResponders.panHandlers}>
-                <Box centerH mb={Space.Medium}>
-                  <Box style={styles.pin} />
-                </Box>
-                {children}
-              </Animated.View>
-            </Pressable>
-          </KeyboardAvoidingView>
-        )}
-      </ComponentStyle>
-  </Modal>)
-})
+    const [visible, setVisible] = useState(initialVisible)
+
+    const screenHeight = Dimensions.get('screen').height
+    const panY = useRef(new Animated.Value(screenHeight)).current
+    const animation = useRef(new Animated.Value(0))
+
+    const overlay = animation.current.interpolate({
+      extrapolate: 'clamp',
+      inputRange: [0, 0.2],
+      outputRange: [0, 0.2],
+    })
+
+    const resetPositionAnim = Animated.timing(panY, {
+      duration: 300,
+      toValue: 0,
+      useNativeDriver: true,
+    })
+
+    const closeAnim = Animated.timing(panY, {
+      duration: 350,
+      toValue: screenHeight,
+      useNativeDriver: true,
+    })
+
+    const translateY = panY.interpolate({
+      inputRange: [-1, 0, 1],
+      outputRange: [0, 0, 1],
+    })
+
+    const show = () => {
+      setVisible(true)
+    }
+    const dismiss = () => {
+      handleDismiss()
+    }
+
+    useImperativeHandle(ref, () => ({
+      dismiss,
+      show,
+    }))
+
+    const handleDismiss = () => {
+      Animated.timing(animation.current, {
+        duration: 180,
+        toValue: 0,
+        useNativeDriver: true,
+      }).start(() => {
+        closeAnim.start(onClose)
+        setVisible(false)
+      })
+    }
+
+    useEffect(() => {
+      resetPositionAnim.start()
+    }, [resetPositionAnim])
+
+    const panResponders = useRef(
+      PanResponder.create({
+        onMoveShouldSetPanResponder: () => false,
+        onPanResponderMove: Animated.event([null, { dy: panY }], {
+          useNativeDriver: false,
+        }),
+        onPanResponderRelease: (_, gs) => {
+          if (gs.dy > 0 && gs.vy > 2) {
+            handleDismiss()
+            return
+          }
+          resetPositionAnim.start()
+        },
+        onStartShouldSetPanResponder: () => true,
+      }),
+    ).current
+
+    return (
+      <Modal
+        animated
+        animationType="slide"
+        onShow={() => {
+          Animated.timing(animation.current, {
+            duration: 300,
+            toValue: 0.2,
+            useNativeDriver: true,
+          }).start()
+        }}
+        transparent
+        visible={visible}
+      >
+        <KeyboardAvoidingView
+          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+          style={styles.container}
+        >
+          <Pressable onPress={handleDismiss} style={styles.pressable}>
+            <Animated.View style={[styles.overlay, { opacity: overlay }]} />
+            <Animated.View
+              style={[styles.content, { transform: [{ translateY }] }]}
+              {...panResponders.panHandlers}
+            >
+              <Box centerH mb="base">
+                <Box style={styles.pin} />
+              </Box>
+              {children}
+            </Animated.View>
+          </Pressable>
+        </KeyboardAvoidingView>
+      </Modal>
+    )
+  },
+)
 
 export default BottomSheet
